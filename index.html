@@ -775,10 +775,14 @@ function updateBackground() {
 updateBackground();
 
 // --- Luz de área única, punto medio de intensidad, desde la esquina superior derecha ---
-const areaLight = new THREE.RectAreaLight(0x86a8e0, 22, 2, 103);
+const areaLight = new THREE.RectAreaLight(0x86a8e0, 52, 2, 103);
+  const areaLight2 = new THREE.RectAreaLight(0x86a8e0, 552, 2, 103);
+  areaLight2.position.set(-150, 51, 10);
 areaLight.position.set(50, 21, 0);
 areaLight.lookAt(0, 3, 0);
+  areaLight2.lookAt(0, 3, 0);
 scene.add(areaLight);
+scene.add(areaLight2);
 
 // Pequeño fill de contraluz: tenue pero presente
 const backLight = new THREE.DirectionalLight("skyblue", 20);

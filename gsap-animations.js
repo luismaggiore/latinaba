@@ -10,12 +10,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     effects: true,
   });
 
-  // gsap code here!
-  gsap.from(".hero-text-content", {
-    duration: 0.8,
-    opacity: 0,
-    x: 40,
-  });
+
   const splitTextDescription = new SplitText(".section-description", {
     type: "lines",
   });
@@ -32,9 +27,16 @@ document.addEventListener("DOMContentLoaded", (event) => {
     },
   });
 
+  gsap.from(".line", {
+    duration: 1,
+    width: "-10%",
+    ease: "power2.inOut",
+  });
+
   const splitText = new SplitText("h1", { type: "words" });
   gsap.from(splitText.words, {
-    duration: 0.2,
+    duration: 0.6,
+    delay:0.2,
     opacity: 0,
     x: 20,
     stagger: 0.1,
@@ -55,7 +57,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
       scrollTrigger: {
         trigger: texto, // El h2 actual es su propio activador
         start: "top 85%", // Empieza cuando el h2 está cerca de entrar por abajo
+        end: "bottom 60%", // Termina cuando el h2 está cerca de salir por arriba
         toggleActions: "play none none none", // Se reproduce una sola vez al entrar
+        scrub: true,
       },
     });
   });

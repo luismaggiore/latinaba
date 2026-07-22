@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LatinaBA Hero</title>
-    <!-- Bootstrap CSS -->
+    <!-- Google Fonts & Bootstrap CSS -->
     <link
       href="https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"
@@ -15,9 +15,9 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="style.css" />
+    <!-- D3 & TopoJSON -->
     <script src="https://unpkg.com/d3@7/dist/d3.min.js"></script>
     <script src="https://unpkg.com/topojson-client@3/dist/topojson-client.min.js"></script>
-    
   </head>
   <body>
     <!-- Header -->
@@ -57,20 +57,20 @@
     </nav>
 
     <!-- Canvas Background -->
-
     <div id="smooth-wrapper">
       <div id="smooth-content">
         <!-- Hero Content -->
-
-        <section class="hero-content bg-ltn "  >
-      <div id="stage"></div>
-<div class="fog-overlay"></div>
-                    <div class="container-fluid mb-custom z-2"> <a class="navbar-brand" href="#">
-        <img src="logo-new.svg" alt="LatinaBA Logo" />
-      </a></div>
-          <div class="container-fluid py-3 z-2">
+        <section class="hero-content bg-ltn">
+          <div id="stage"></div>
+          <div class="fog-overlay"></div>
+          <div class="container-fluid mb-custom z-2" data-speed="1.1">
+            <a class="navbar-brand" href="#">
+              <img src="logo-new.svg" alt="LatinaBA Logo" />
+            </a>
+          </div>
+          <div class="container-fluid py-3 z-2" data-speed="1.1">
             <div class="row">
-              <div class="col-md">
+              <div class="col-lg">
                 <div class="mb-custom">
                   <ul class="hero-nav mb-custom">
                     <li><a class="nav-link" href="#">Services</a></li>
@@ -83,617 +83,218 @@
                     Your CRO in
                     <span class="highlight">Latin America</span>
                   </h1>
-          
                 </div>
               </div>
-              <div class="col-md-3">
-                <p class=" hero-p  mb-custom">
+              <div class="col-lg-3 mb-3">
+                <p class="hero-p">
                   We guarantee compliance with best industry practices,
                   international quality standards and local regulatory
                   requirements.
                 </p>
-                    <a class="btn-latinaba" href="#"> Call to Action </a>
+                <div class="line d-none d-lg-block"></div>
+                <a class="btn mt-4 btn-latinaba" href="#"> Call to Action </a>
               </div>
             </div>
           </div>
-  <div class="container-fluid  z-2 pb-3 " >
-            <div class="row gx-0 justify-content-between pt-5 pb-hero stats-display" style="border-top: white 1px solid">
+          <div class="container-fluid z-2 pb-3" data-speed="1.04">
+            <div class="line mb-custom"></div>
+            <div class="row gx-0 justify-content-between pb-hero stats-display">
               <div class="col-lg-auto col-6">
-                <p> <span>17 </span> Years of experience</p>
+                <p><span>17 </span> Years of experience</p>
               </div>
               <div class="col-lg-auto col-6">
                 <p><span>135+ </span> Completed projects</p>
               </div>
-              <div class="col-lg-auto col-6">  <p><span>95 </span> Different sponsors</p></div>
-              <div class="col-lg-auto col-6">  <p><span>15 </span> Countries</p></div>
+              <div class="col-lg-auto col-6">
+                <p><span>95 </span> Different sponsors</p>
+              </div>
+              <div class="col-lg-auto col-6">
+                <p><span>15 </span> Countries</p>
+              </div>
               <div class="col-lg-auto col-12" style="border-right: none">
-                  <p><span>34+ </span> Therapeutic areas</p>
+                <p><span>34+ </span> Therapeutic areas</p>
               </div>
             </div>
           </div>
         </section>
-  <section class="bg-ltn z-2">
-    <div class="container-fluid py-5">
-      <div class="row "><span class="label-section">Who we are</span>
-        <div class="col-lg">
-          <div class="border-bt py-5">
-            <h2 class="mb-5">A full-service Contract Research Organization with senior clinical operations teams across
-              Latin America</h2>
-            <p class="section-description">
-              For more than 17 years, we have partnered with pharmaceutical, biotech, and
-              medical device companies as experts in the region, conducting all phases of clinical trials, Medical Device
-              studies,
-              Observational and Real-World Evidence (RWE) research, and full Clinical Trial Oversight.
-            </p>
-  
-          </div>
-      
-        </div>
-        <div class="col-lg">
-          
-    <div class="border-bt py-5">
-      <h2 class="mb-5"> We know the regulatory landscape, site networks, and cultural nuances
-      of each country in the region</h2>
-      <p class="section-description">
-        Every sponsor works directly with senior experts with boutique attention to detail from teams who've run these trials themselves, not just
-        managed them. Shorter lines of communication, faster decisions, and a team that treats your study as a priority.
-      </p>
-    
-    </div>
-        </div>
-      </div>
-    </div>
-  </section>
-        <section  class="bg-ltn z-2">
+
+        <!-- Who We Are Section -->
+        <section class="bg-ltn z-2">
           <div class="container-fluid py-5">
-            <div class="row align-items-center">
-              <div class="col-lg"><span class="label-section">Our location</span>
-                <div class="border-bt py-5">
-                <h2 class="mb-5">Operations Headquarters in Buenos Aires, Argentina with permanent offices in Brazil, Chile and Mexico, and service
-                coverage across 16 countries in Latin America.</h2>
-                <p class="section-description mb-5">
-                  <ul class="presence">
-                    <li>Legal presence: Argentina (HQ), Brazil, Chile, Mexico</li>
-                    <li>Regional partners (IoR): Central America, Colombia, Peru</li>
-                    <li>Additional coverage: Venezuela, Panama, Costa Rica, Paraguay, Bolivia, Belize, Uruguay</li>
-
-                  </ul>
-            
-
-                </p>   <div class="toolbar">
-                    <div class="legend" id="legend1"></div>
-                  </div>
-           </div>
+            <div class="row">
+              <span class="label-section">Who we are</span>
+              <div class="col-lg">
+                <div class="py-5">
+                  <h2 class="mb-custom">
+                    A full-service Contract Research Organization with senior
+                    clinical operations teams across Latin America
+                  </h2>
+                  <p class="section-description">
+                    For more than 17 years, we have partnered with
+                    pharmaceutical, biotech, and medical device companies as
+                    experts in the region, conducting all phases of clinical
+                    trials, Medical Device studies, Observational and Real-World
+                    Evidence (RWE) research, and full Clinical Trial Oversight.
+                  </p>
+                </div>
+                <div class="line"></div>
               </div>
               <div class="col-lg">
-                <section class="panel z-3">
-              
+                <div class="py-5">
+                  <h2 class="mb-custom">
+                    We know the regulatory landscape, site networks, and
+                    cultural nuances of each country in the region
+                  </h2>
+                  <p class="section-description">
+                    Every sponsor works directly with senior experts with
+                    boutique attention to detail from teams who've run these
+                    trials themselves, not just managed them. Shorter lines of
+                    communication, faster decisions, and a team that treats
+                    your study as a priority.
+                  </p>
+                </div>
+                <div class="line"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Our Location Section -->
+        <section class="bg-ltn z-2">
+          <div class="container-fluid py-5">
+            <div class="row gy-0 align-items-center">
+              <div class="col-lg">
+                <span class="label-section">Our location</span>
+                <div class="py-5">
+                  <h2 class="mb-half">
+                    Operations Headquarters in Buenos Aires, Argentina with
+                    permanent offices in Brazil, Chile and Mexico, and service
+                    coverage across 16 countries in Latin America.
+                  </h2>
+                  <ul class="presence mb-half">
+                    <li>Legal presence: Argentina (HQ), Brazil, Chile, Mexico</li>
+                    <li>
+                      Regional partners (IoR): Central America, Colombia, Peru
+                    </li>
+                    <li>
+                      Additional coverage: Venezuela, Panama, Costa Rica,
+                      Paraguay, Bolivia, Belize, Uruguay
+                    </li>
+                  </ul>
+
+                  <div class="toolbar">
+                    <div class="legend" id="legend1"></div>
+                  </div>
+                </div>
+                <div class="line d-none d-lg-block"></div>
+              </div>
+              <div class="col-lg">
+                <section class="panel z-3 m-0 p-0">
                   <div class="map-wrap">
-                    <svg class="mapsvg" id="svg1" viewBox="200 0 450 620"></svg>
-                  </div> 
+                    <svg class="mapsvg" id="svg1" viewBox="200 20 450 590"></svg>
+                  </div>
                 </section>
-
-                <script>
-                  function getVar(name) {
-                    return getComputedStyle(document.documentElement)
-                      .getPropertyValue(name)
-                      .trim();
-                  }
-
-                  const CATEGORY_COLOR = {
-                    latinaba: getVar("--latinaba"),
-                    ior: getVar("--ior"),
-                    experience: getVar("--experience"),
-                    hub: getVar("--hub"),
-                    none: getVar("--none"),
-                  };
-
-                  const CATEGORY_LABEL = {
-                    latinaba: "LATINABA (own legal entity)",
-                    ior: "IoR Partners",
-                    experience: "Prior experience",
-                    hub: "Contracting Hub (LATINABA LLC)",
-                  };
-                  const LEGEND_CATS = ["latinaba", "hub", "ior", "experience"];
-
-                  // ISO-3166 numeric id (world-atlas topojson) -> country data
-                  const countryData = {
-                    840: {
-                      name: "United States",
-                      category: "hub",
-                      note: "LATINABA LLC — Contracting Hub",
-                    },
-                    "032": {
-                      name: "Argentina",
-                      category: "latinaba",
-                      note: "LATINABA — legal presence",
-                    },
-                    "076": {
-                      name: "Brazil",
-                      category: "latinaba",
-                      note: "LATINABA — legal presence",
-                    },
-                    152: {
-                      name: "Chile",
-                      category: "latinaba",
-                      note: "LATINABA — legal presence",
-                    },
-                    484: {
-                      name: "Mexico",
-                      category: "latinaba",
-                      note: "LATINABA — legal presence",
-                    },
-                    320: {
-                      name: "Guatemala",
-                      category: "ior",
-                      note: "IoR Partners — Central America",
-                    },
-                    340: {
-                      name: "Honduras",
-                      category: "ior",
-                      note: "IoR Partners — Central America",
-                    },
-                    222: {
-                      name: "El Salvador",
-                      category: "ior",
-                      note: "IoR Partners — Central America",
-                    },
-                    558: {
-                      name: "Nicaragua",
-                      category: "ior",
-                      note: "IoR Partners — Central America",
-                    },
-                    170: {
-                      name: "Colombia",
-                      category: "ior",
-                      note: "IoR Partners",
-                    },
-                    604: {
-                      name: "Peru",
-                      category: "ior",
-                      note: "IoR Partners",
-                    },
-                    862: {
-                      name: "Venezuela",
-                      category: "experience",
-                      note: "Prior experience providing services",
-                    },
-                    591: {
-                      name: "Panama",
-                      category: "experience",
-                      note: "Prior experience providing services",
-                    },
-                    188: {
-                      name: "Costa Rica",
-                      category: "experience",
-                      note: "Prior experience providing services",
-                    },
-                    600: {
-                      name: "Paraguay",
-                      category: "experience",
-                      note: "Prior experience providing services",
-                    },
-                    "068": {
-                      name: "Bolivia",
-                      category: "experience",
-                      note: "Prior experience providing services",
-                    },
-                    "084": {
-                      name: "Belize",
-                      category: "experience",
-                      note: "Prior experience providing services",
-                    },
-                    858: {
-                      name: "Uruguay",
-                      category: "experience",
-                      note: "Prior experience providing services",
-                    },
-                  };
-
-                  // Context countries shown in grey (no direct presence)
-                  const AMERICAS_IDS = [
-                    "840",
-                    "484",
-                    "320",
-                    "084",
-                    "340",
-                    "222",
-                    "558",
-                    "188",
-                    "591",
-                    "192",
-                    "388",
-                    "332",
-                    "214",
-                    "044",
-                    "630",
-                    "780",
-                    "170",
-                    "862",
-                    "328",
-                    "740",
-                    "218",
-                    "604",
-                    "076",
-                    "068",
-                    "600",
-                    "152",
-                    "032",
-                    "858",
-                  ];
-
-                  function showTooltip(html, evt) {
-                    d3.select("#tooltip")
-                      .html(html)
-                      .style("left", evt.clientX + "px")
-                      .style("top", evt.clientY + "px")
-                      .classed("show", true);
-                  }
-                  function hideTooltip() {
-                    d3.select("#tooltip").classed("show", false);
-                  }
-                  function detailHtml(id, fallbackName) {
-                    const d = countryData[id];
-                    if (!d)
-                      return `<b>${fallbackName}</b><br>No direct presence listed`;
-                    return `<b>${d.name}</b><br>${d.note}`;
-                  }
-
-                  function buildLegend(containerSel, onClick) {
-                    const sel = d3
-                      .select(containerSel)
-                      .selectAll(".legend-item")
-                      .data(LEGEND_CATS)
-                      .join("div")
-                      .attr("class", "legend-item")
-                      .on("click", function (evt, cat) {
-                        onClick(cat);
-                      });
-                    sel.selectAll("*").remove();
-                    sel
-                      .append("span")
-                      .attr("class", "swatch")
-                      .style("background", (d) => CATEGORY_COLOR[d]);
-                    sel.append("span").text((d) => CATEGORY_LABEL[d]);
-                    return sel;
-                  }
-
-                  d3.json("https://unpkg.com/world-atlas@2/countries-110m.json")
-                    .then((topo) => {
-                      const all = topojson.feature(
-                        topo,
-                        topo.objects.countries,
-                      ).features;
-                      const americas = all.filter((f) =>
-                        AMERICAS_IDS.includes(f.id),
-                      );
-                      americas.forEach((f) => {
-                        if (
-                          (f.id === "840" || f.id === 840) &&
-                          f.geometry &&
-                          f.geometry.type === "MultiPolygon"
-                        ) {
-                          f.geometry.coordinates = f.geometry.coordinates.filter(
-                            (poly) => {
-                              const ring = poly[0];
-                              let maxLat = -90,
-                                maxLng = -180;
-                              ring.forEach(([lng, lat]) => {
-                                if (lat > maxLat) maxLat = lat;
-                                if (lng > maxLng) maxLng = lng;
-                              });
-                              const isAlaska = maxLat > 50;
-                              const isHawaii = maxLng < -130 && maxLat < 35;
-                              return !isAlaska && !isHawaii;
-                            },
-                          );
-                        }
-                      });
-                      const colorOf = (f) =>
-                        CATEGORY_COLOR[
-                          countryData[f.id]
-                            ? countryData[f.id].category
-                            : "none"
-                        ];
-
-                      const svg = d3.select("#svg1");
-                      const W = 860,
-                        H = 620;
-                      const projection = d3.geoMercator().fitExtent(
-                        [
-                          [16, 16],
-                          [W - 16, H - 16],
-                        ],
-                        { type: "FeatureCollection", features: americas },
-                      );
-                      const path = d3.geoPath(projection);
-
-                      const paths = svg
-                        .selectAll("path")
-                        .data(americas)
-                        .join("path")
-                        .attr("class", "country-path")
-                        .attr("data-id", (d) => d.id)
-                        .attr("d", path)
-                        .attr("fill", colorOf)
-                        .attr("stroke", "#005163")
-                        .attr("stroke-width", 0.5)
-                        .on("mousemove", (evt, d) =>
-                          showTooltip(detailHtml(d.id, d.properties.name), evt),
-                        )
-                        .on("mouseleave", hideTooltip)
-                        .on("mouseenter", function () {
-                          d3.select(this).attr("stroke-width", 2.5);
-                        })
-                        .on("mouseout", function () {
-                          d3.select(this).attr("stroke-width", 1);
-                        });
-
-                      let filter = null;
-                      buildLegend("#legend1", (cat) => {
-                        filter = filter === cat ? null : cat;
-                        paths.classed("dim", function () {
-                          if (!filter) return false;
-                          const id = d3.select(this).attr("data-id");
-                          const c = countryData[id]
-                            ? countryData[id].category
-                            : "none";
-                          return c !== filter;
-                        });
-                        d3.select("#legend1")
-                          .selectAll(".legend-item")
-                          .classed("dim", (d2) => filter && d2 !== filter);
-                      });
-                    })
-                    .catch((err) => {
-                      document.body.insertAdjacentHTML(
-                        "beforeend",
-                        `<p style="color:red;padding:0 28px;">Could not load the base map (check your internet connection): ${err}</p>`,
-                      );
-                    });
-                </script>
               </div>
             </div>
           </div>
         </section>
-
-        <section class="bg-gradientlt py-5">
-
-          <div class="container-fluid ">
-            <div class="row ">
-             
-              <div class="col-lg "><span class="label-section">Explore</span>
-                <a class="explore" href="#"><h2 class="py-5">Why our clients select us</h2></a>
-
-              </div>
-              <div class="col-lg"><span class="label-section">Explore</span>
-                              <a class="explore" href="#"><h2 class="py-5">Clinical research services </h2></a>
-              
-              </div>
-
-            </div>
-
-          </div>
-        </section>
-
-
-        <section class="py-5 d-none border-bt">
+  <!-- Clinical Research Donut Chart Section (Hidden) -->
+        <section class="py-5 d-none">
           <div class="container-fluid">
             <div class="row align-items-center">
-     
-              <div class="col-md-6">
-        <div id="wrapper">
-  <div id="donut-chart"></div>
-  <div id="donut-legend"></div>
-  <div id="donut-tooltip"></div>
-</div>
-                <script>
-(function(){
-  const data = [
-    {name:'Acne Vulgaris', phase:'Phase III'},
-    {name:'Anemia in Renal Impairment', phase:'Phase III'},
-    {name:'Cardiology', phase:'Phase III'},
-    {name:'Cardiovascular Megatrial', phase:'Phase III'},
-    {name:'Childhood Diarrheal Disease', phase:'Phase III'},
-    {name:'Early Puberty', phase:'Phase III'},
-    {name:'GH Deficiency', phase:'Phase III'},
-    {name:'Hepatic Diseases, orphan indication (PBC)', phase:'Phase III'},
-    {name:'Herpes Simplex + HIV', phase:'Phase III'},
-    {name:'Hypertriglyceridemia and Diabetes', phase:'Phase III'},
-    {name:'Narcolepsy', phase:'Phase III'},
-    {name:'Pediatric Impetigo', phase:'Phase III'},
-    {name:'Post Transplant PTLD', phase:'Phase III'},
-    {name:'Preeclampsia Prevention', phase:'Phase III'},
-    {name:'Pulmonary Enfisema', phase:'Phase III'},
-    {name:'Severe Osteoporosis', phase:'Phase IV'},
-    {name:'Traumatic Brain Injury', phase:'Phase IV'},
-    {name:'Ulcerative Colitis', phase:'Phase IV'},
-    {name:'Wilson Disease', phase:'Phase IV'},
-    {name:'Acne Vulgaris', phase:'Phase IV'},
-    {name:'Cardiovascular Holter', phase:'Phase IV'},
-    {name:'H1N1 vaccine', phase:'Obs'},
-    {name:'Imaging Contrast Product and Nephrotoxicity Pharmacovigilance', phase:'Obs'},
-    {name:'Neurovascular Holter', phase:'Obs'},
-    {name:'Allergic diseases', phase:'Obs'},
-    {name:'Breast Cancer', phase:'Obs'},
-    {name:'Hemophilia A', phase:'Obs'},
-    {name:'Infectious Diseases', phase:'Obs'},
-    {name:'Acute Ischemic Stroke', phase:'Obs'},
-    {name:'Childhood Adrenoleukodystrophy', phase:'Phase II'},
-    {name:'Congenital Adrenal Hyperplasia', phase:'Phase II'},
-    {name:'Neuroblastoma', phase:'Phase II'},
-    {name:'Rehumatoid Arthritis', phase:'Phase II'},
-    {name:'Rheumatoid Arthritis', phase:'Phase II'},
-    {name:'Zika Virus', phase:'Phase II'},
-    {name:'Acute pain', phase:'N/A'},
-    {name:'ALL postmarketing', phase:'N/A'},
-    {name:'Cardiology', phase:'N/A'},
-    {name:'Clinical Trials in Latin America', phase:'N/A'},
-    {name:'Dengue, Zika, Chicungunya', phase:'N/A'},
-    {name:'GCP in Latin America - Oncology', phase:'N/A'},
-    {name:'N/A', phase:'N/A'},
-    {name:'Abdominal aorta Aneurysm', phase:'FIM'},
-    {name:'Cardiovascular Medical Device', phase:'FIM'},
-    {name:'Glaucoma/IOP monitoring device', phase:'FIM'},
-    {name:'Hypertension', phase:'FIM'},
-    {name:'Post Cataract Surgery Pain', phase:'FIM'}
-  ];
-
-  const phaseColors = {
-    'Phase III': '#378ADD',
-    'Phase IV': '#444441',
-    'Obs': '#1D9E75',
-    'Phase II': '#D85A30',
-    'N/A': '#7F77DD',
-    'FIM': '#E24B4A'
-  };
-
-  const width = 940, height = 800;
-  const cx = width/2, cy = height/2;
-  const radius = 205;
-  const innerRadius = 112;
-
-  const svg = d3.select('#donut-chart').append('svg')
-    .attr('viewBox', `0 0 ${width} ${height}`)
-    .attr('width','100%')
-    .attr('role','img')
-    .attr('aria-label','Donut chart of projects by phase and indication');
-
-  const g = svg.append('g').attr('transform', `translate(${cx},${cy})`);
-
-  const pie = d3.pie().value(()=>1).sort(null).padAngle(0.004);
-  const arcsData = pie(data);
-
-  const arc = d3.arc().innerRadius(innerRadius).outerRadius(radius);
-  const outerArc = d3.arc().innerRadius(radius+14).outerRadius(radius+14);
-
-  const tooltip = d3.select('#donut-tooltip');
-
-  g.selectAll('path.slice')
-    .data(arcsData)
-    .join('path')
-    .attr('d', arc)
-    .attr('fill', d=>phaseColors[d.data.phase])
-    .attr('stroke','#ffffff')
-    .attr('stroke-width', 1.5)
-    .style('cursor','pointer')
-    .on('mousemove', function(event,d){
-      const [mx,my] = d3.pointer(event, event.currentTarget.ownerSVGElement.parentNode);
-      tooltip.style('opacity',1)
-        .style('left', (mx+12)+'px')
-        .style('top', (my+12)+'px')
-        .html('<strong>'+d.data.name+'</strong><br>'+d.data.phase);
-      d3.select(this).attr('opacity',0.8);
-    })
-    .on('mouseleave', function(){
-      tooltip.style('opacity',0);
-      d3.select(this).attr('opacity',1);
-    });
-
-  const labelData = arcsData.map(d=>{
-    const midAngle = d.startAngle + (d.endAngle-d.startAngle)/2;
-    const side = midAngle < Math.PI ? 'right' : 'left';
-    const pos = outerArc.centroid(d);
-    return Object.assign({}, d, {midAngle, side, y: pos[1]});
-  });
-
-  const minGap = 13;
-  ['left','right'].forEach(side=>{
-    const arr = labelData.filter(l=>l.side===side).sort((a,b)=>a.y-b.y);
-    for(let i=1;i<arr.length;i++){
-      if(arr[i].y - arr[i-1].y < minGap){
-        arr[i].y = arr[i-1].y + minGap;
-      }
-    }
-  });
-
-  const labelRadius = radius + 55;
-
-  g.selectAll('polyline')
-    .data(labelData)
-    .join('polyline')
-    .attr('points', d=>{
-      const start = arc.centroid(d);
-      const pivot = outerArc.centroid(d);
-      const end = [labelRadius * (d.side==='right'?1:-1), d.y];
-      return [start,pivot,end];
-    })
-    .attr('fill','none')
-    .attr('stroke','#bbb')
-    .attr('stroke-width',1);
-
-  g.selectAll('text.label')
-    .data(labelData)
-    .join('text')
-    .attr('x', d=>(labelRadius+6) * (d.side==='right'?1:-1))
-    .attr('y', d=>d.y)
-    .attr('text-anchor', d=>d.side==='right' ? 'start':'end')
-    .attr('dy','0.32em')
-    .style('font-size','10.5px')
-    .style('fill','white')
-    .text(d=>d.data.name);
-
-  const legend = d3.select('#donut-legend');
-  Object.entries(phaseColors).forEach(([phase,color])=>{
-    const item = legend.append('span').style('display','flex').style('align-items','center').style('gap','4px');
-    item.append('span').style('width','10px').style('height','10px').style('border-radius','2px').style('background',color).style('display','inline-block');
-    item.append('span').text(phase);
-  });
-})();
-</script>
-           </div>
-                  <div class="col-md-6">
-             <h2 class="mb-5">We have extensive experience in all phases in <strong>Clinical Research</strong></h2>
-              
-           </div>
-           </div>
+              <div class="col-md-8">
+                <div id="wrapper">
+                  <div id="donut-chart"></div>
+                  <div id="donut-legend"></div>
+                  <div id="donut-tooltip"></div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <h2 class="mb-custom">
+                  We have extensive experience in all phases in
+                  <strong>Clinical Research</strong>
+                </h2>
+              </div>
+            </div>
           </div>
-
+        </section>
+        <!-- Explore Section -->
+        <section class="bg-gradientlt py-5">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg">
+                <span class="label-section">Explore</span>
+                <a class="explore" href="#">
+                  <h2 class="py-5">Why our clients select us</h2>
+                </a>
+              </div>
+              <div class="col-lg">
+                <span class="label-section">Explore</span>
+                <a class="explore" href="#">
+                  <h2 class="py-5">Clinical research services</h2>
+                </a>
+              </div>
+            </div>
+          </div>
         </section>
 
-        <footer class=" text-white ">
+      
+
+        <!-- Footer -->
+        <footer class="text-white">
           <div class="container-fluid">
             <div class="row">
               <!-- Column 1: Logo -->
               <div class="col-md-4 mb-4 mb-md-0">
                 <div class="mb-3">
-    <a class="navbar-brand" href="#">
-      <img src="logo-new.svg" alt="LatinaBA Logo" />
-    </a>                  <p class="mt-5 ">Leading Clinical Research Solutions</p>
+                  <a class="navbar-brand" href="#">
+                    <img src="logo-new.svg" alt="LatinaBA Logo" />
+                  </a>
+                  <p class="mt-5">Leading Clinical Research Solutions</p>
                 </div>
               </div>
-              
+
               <!-- Column 2: Vertical Menu -->
               <div class="col-md-4 mb-4 mb-md-0">
                 <h6 class="fw-bold mb-3">Quick Links</h6>
                 <ul class="list-unstyled">
-                  <li><a href="#" class="text-white-50 text-decoration-none ">Home</a></li>
-                  <li><a href="#" class="text-white-50 text-decoration-none ">About Us</a></li>
-                  <li><a href="#" class="text-white-50 text-decoration-none ">Services</a></li>
-                  <li><a href="#" class="text-white-50 text-decoration-none ">Contact</a></li>
+                  <li>
+                    <a href="#" class="text-white-50 text-decoration-none">Services</a>
+                  </li>
+                  <li>
+                    <a href="#" class="text-white-50 text-decoration-none">Experience</a>
+                  </li>
+                  <li>
+                    <a href="#" class="text-white-50 text-decoration-none">Leadership</a>
+                  </li>
+                  <li>
+                    <a href="#" class="text-white-50 text-decoration-none">Contact</a>
+                  </li>
                 </ul>
               </div>
-              
-              <!-- Column 3: Other Info -->
+
+              <!-- Column 3: Contact Info -->
               <div class="col-md-4">
                 <h6 class="fw-bold mb-3">Contact Info</h6>
-                <p class="text-white-50  mb-2">
+                <p class="text-white-50 mb-2">
                   <strong>Email:</strong> info@latinaba.com
                 </p>
-                <p class="text-white-50  mb-2">
+                <p class="text-white-50 mb-2">
                   <strong>Phone:</strong> +1 (555) 123-4567
                 </p>
-                <p class="text-white-50 ">
+                <p class="text-white-50">
                   <strong>Address:</strong> 123 Clinical Research Ave, Medical City
                 </p>
               </div>
             </div>
-            
-            <hr class="bg-white-50 my-4">
-            
+
+            <hr class="bg-white-50 my-4" />
+
             <div class="row">
               <div class="col-12 text-center">
-                <p class="text-white-50 small mb-0">&copy; 2024 Latin ABA. All rights reserved.</p>
+                <p class="text-white-50 small mb-0">
+                  &copy; 2024 Latin ABA. All rights reserved.
+                </p>
               </div>
             </div>
           </div>
@@ -702,402 +303,34 @@
     </div>
     <div class="tooltip" id="tooltip"></div>
 
+    <!-- GSAP Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"></script>
-    <!-- ScrollSmoother requires ScrollTrigger -->
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollSmoother.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollToPlugin.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/SplitText.min.js"></script>
 
+    <!-- Bootstrap JS -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
       crossorigin="anonymous"
     ></script>
+
+    <!-- Application Modules -->
     <script src="script.js"></script>
     <script src="gsap-animations.js"></script>
+    <script src="latam-map.js"></script>
+    <script src="donut-chart.js"></script>
+
+    <!-- Three.js Importmap & 3D Hero Scene Module -->
     <script type="importmap">
-{
-  "imports": {
-    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-  }
-}
-</script>
-
-<script type="module">
-import * as THREE from "three";
-import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
-RectAreaLightUniformsLib.init();
-
-const BG = 0x01040f;
-
-const container = document.getElementById('stage');
-
-// --- Escena base ---
-const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x01040f, 0.032);
-
-const camera = new THREE.PerspectiveCamera(
-  28,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  120
-);
-camera.position.set(0, 3, 30);
-camera.lookAt(0, 3, 0);
-
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor(BG, 1);
-container.appendChild(renderer.domElement);
-
-// --- Fondo: degradado LINEAL, en la misma dirección de la luz principal (esquina superior derecha) ---
-function buildBackgroundTexture(aspect) {
-  const height = 1024;
-  const width = Math.round(height * aspect);
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  return texture;
-}
-
-function updateBackground() {
-  const aspect = window.innerWidth / window.innerHeight;
-  const old = scene.background;
-  scene.background = buildBackgroundTexture(aspect);
-  if (old) old.dispose();
-}
-updateBackground();
-
-// --- Luz de área única, punto medio de intensidad, desde la esquina superior derecha ---
-const areaLight = new THREE.RectAreaLight(0x86a8e0, 52, 2, 103);
-  const areaLight2 = new THREE.RectAreaLight(0x86a8e0, 552, 2, 103);
-  areaLight2.position.set(-150, 51, 10);
-areaLight.position.set(50, 21, 0);
-areaLight.lookAt(0, 3, 0);
-  areaLight2.lookAt(0, 3, 0);
-scene.add(areaLight);
-scene.add(areaLight2);
-
-// Pequeño fill de contraluz: tenue pero presente
-const backLight = new THREE.DirectionalLight("skyblue", 20);
-backLight.position.set(-14, 43, -100);
-scene.add(backLight);
-// --- Paleta punto medio: azules oscuros con algo de acento ---
-const palette = [
-  0x1a2f70, // azul acero apagado
-  0x1e3a8a, // azul acero
-  0x223f9a, // azul con más presencia (acento suave)
-  0x2650b0  // azul intenso (acento suave)
-];
-
-// --- Grupo y esferas ---
-const group = new THREE.Group();
-scene.add(group);
-
-const SPHERE_COUNT = 70;
-const spheres = [];
-const placedSpheres = []; // {x,y,z,r} de las ya ubicadas, para el rejection sampling
-
-// Genera una posición que no se solape (o solape lo mínimo posible) con las esferas ya ubicadas
-function findNonOverlappingPosition(radius) {
-  const spreadX = 28, yMin = 1.5, yMax = 10.5, zMin = -7, zMax = 6;
-  const PADDING = 0.15;
-  const MAX_ATTEMPTS = 60;
-
-  let best = null;
-  let bestScore = -Infinity;
-
-  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
-    const x = THREE.MathUtils.randFloatSpread(spreadX);
-    const y = THREE.MathUtils.randFloat(yMin, yMax);
-    const z = THREE.MathUtils.randFloat(zMin, zMax);
-
-    let minGap = Infinity;
-    for (const p of placedSpheres) {
-      const dx = x - p.x, dy = y - p.y, dz = z - p.z;
-      const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-      const gap = dist - (radius + p.r + PADDING);
-      if (gap < minGap) minGap = gap;
-    }
-    if (placedSpheres.length === 0) minGap = Infinity;
-
-    if (minGap >= 0) {
-      // no hay solape: usamos esta posición directamente
-      return { x, y, z };
-    }
-    // guardamos la mejor candidata (menor solape) por si agotamos los intentos
-    if (minGap > bestScore) {
-      bestScore = minGap;
-      best = { x, y, z };
-    }
-  }
-  return best;
-}
-
-const geometry = new THREE.IcosahedronGeometry(1, 4); // esfera lisa, base para escalar
-const coreGeometry = new THREE.SphereGeometry(1, 16, 16);
-
-for (let i = 0; i < SPHERE_COUNT; i++) {
-  const color = new THREE.Color(palette[Math.floor(Math.random() * palette.length)]);
-
-  // Cuerpo principal: punto medio entre glossy/brillante y mate/discreto
-  const material = new THREE.MeshPhysicalMaterial({
-    color: color,
-    emissive: color.clone().multiplyScalar(0.38),
-    emissiveIntensity: 0.8,
-    roughness: 0.45,
-    metalness: 0.1,
-    clearcoat: 0.5,
-    clearcoatRoughness: 0.5,
-  });
-
-  const mesh = new THREE.Mesh(geometry, material);
-
-  const scale = THREE.MathUtils.randFloat(0.28, 0.95);
-  mesh.scale.setScalar(scale);
-
-  // Posición: elegida para no solaparse con las esferas ya colocadas
-  const pos = findNonOverlappingPosition(scale);
-  mesh.position.set(pos.x, pos.y, pos.z);
-  placedSpheres.push({ x: pos.x, y: pos.y, z: pos.z, r: scale });
-
-  // Núcleo brillante (additive), punto medio de intensidad
-  const coreMaterial = new THREE.MeshBasicMaterial({
-    color: 0x94b8ea,
-    transparent: true,
-    opacity: 0.38,
-    blending: THREE.AdditiveBlending,
-    depthWrite: false,
-  });
-  const core = new THREE.Mesh(coreGeometry, coreMaterial);
-  core.scale.setScalar(0.35);
-  mesh.add(core);
-
-  group.add(mesh);
-
-  spheres.push({
-    mesh,
-    basePos: mesh.position.clone(),
-    floatSpeed: THREE.MathUtils.randFloat(0.3, 0.9),
-    floatAmp: THREE.MathUtils.randFloat(0.15, 0.5),
-    phase: Math.random() * Math.PI * 2,
-    rotSpeed: THREE.MathUtils.randFloat(-0.4, 0.4),
-    velocity: new THREE.Vector3(),
-  });
-}
-
-// --- Red de enlaces tipo "molécula de proteína" entre esferas cercanas ---
-// Los enlaces se calculan UNA sola vez (según la posición inicial de las esferas)
-// y luego se mantienen fijos: solo se actualizan sus extremos para seguir el movimiento.
-const MAX_LINKS = 400;
-const LINK_DISTANCE = 4.0;
-const MIN_CONNECTIONS = 1;
-const MAX_CONNECTIONS = 3;
-
-const links = []; // pares [i, j] fijos, definidos una sola vez
-const linkKeys = new Set();
-const connectionCount = new Array(spheres.length).fill(0);
-
-function addLink(i, j) {
-  const key = i < j ? i + '-' + j : j + '-' + i;
-  if (linkKeys.has(key)) return;
-  linkKeys.add(key);
-  links.push([i, j]);
-  connectionCount[i]++;
-  connectionCount[j]++;
-}
-
-// Pares candidatos ordenados por distancia (más cercanos primero)
-const candidatePairs = [];
-for (let i = 0; i < spheres.length; i++) {
-  for (let j = i + 1; j < spheres.length; j++) {
-    candidatePairs.push([i, j, spheres[i].basePos.distanceTo(spheres[j].basePos)]);
-  }
-}
-candidatePairs.sort((a, b) => a[2] - b[2]);
-
-// Paso 1: conectar pares cercanos dentro del rango, respetando el máximo por esfera
-for (const [i, j, dist] of candidatePairs) {
-  if (links.length >= MAX_LINKS) break;
-  if (dist >= LINK_DISTANCE) break; // ya viene ordenado: el resto está más lejos
-  if (connectionCount[i] >= MAX_CONNECTIONS || connectionCount[j] >= MAX_CONNECTIONS) continue;
-  addLink(i, j);
-}
-
-// Paso 2: garantizar el mínimo de conexiones por esfera (aunque quede fuera de rango)
-for (const [i, j] of candidatePairs) {
-  if (links.length >= MAX_LINKS) break;
-  if (connectionCount.every((c) => c >= MIN_CONNECTIONS)) break;
-  if (connectionCount[i] >= MIN_CONNECTIONS && connectionCount[j] >= MIN_CONNECTIONS) continue;
-  if (connectionCount[i] >= MAX_CONNECTIONS || connectionCount[j] >= MAX_CONNECTIONS) continue;
-  addLink(i, j);
-}
-
-// Cilindros en vez de líneas: geometría unitaria (altura 1, eje Y) que escalamos/orientamos por instancia
-const LINK_RADIUS = 0.02;
-const linkGeometry = new THREE.CylinderGeometry(LINK_RADIUS, LINK_RADIUS, 1, 12, 1, false);
-const linkMaterial = new THREE.MeshPhysicalMaterial({
-  color: 0x8fa8d6,
-  roughness: 1,
-  metalness: 0,
-  clearcoat: 0.1,
-  clearcoatRoughness: 0.5,
-});
-const linkMesh = new THREE.InstancedMesh(linkGeometry, linkMaterial, Math.max(links.length, 1));
-group.add(linkMesh);
-
-// Objetos temporales reutilizados cada frame para no generar basura (GC)
-const _linkMid = new THREE.Vector3();
-const _linkDir = new THREE.Vector3();
-const _linkQuat = new THREE.Quaternion();
-const _linkScale = new THREE.Vector3();
-const _linkMatrix = new THREE.Matrix4();
-const _upAxis = new THREE.Vector3(0, 1, 0);
-
-// --- Interacción con el cursor ---
-const mouseNDC = new THREE.Vector2(0, 0);
-const raycaster = new THREE.Raycaster();
-// Plano invisible donde proyectamos el cursor (altura media de las esferas)
-const interactionPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
-const cursorWorldPos = new THREE.Vector3();
-let hasPointer = false;
-
-function updatePointer(clientX, clientY) {
-  mouseNDC.x = (clientX / window.innerWidth) * 2 - 1;
-  mouseNDC.y = -(clientY / window.innerHeight) * 2 + 1;
-  hasPointer = true;
-}
-
-window.addEventListener('pointermove', (e) => updatePointer(e.clientX, e.clientY));
-window.addEventListener('touchmove', (e) => {
-  if (e.touches.length > 0) {
-    updatePointer(e.touches[0].clientX, e.touches[0].clientY);
-  }
-}, { passive: true });
-
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  updateBackground();
-});
-
-// --- Animación ---
-const clock = new THREE.Clock();
-const REPEL_RADIUS = 3.2;
-const REPEL_STRENGTH = 2.4;
-const SPRING = 0.06;
-const DAMPING = 0.90;
-
-function animate() {
-  requestAnimationFrame(animate);
-  const t = clock.getElapsedTime();
-
-  if (hasPointer) {
-    raycaster.setFromCamera(mouseNDC, camera);
-    raycaster.ray.intersectPlane(interactionPlane, cursorWorldPos);
-  }
-
-  // ligera rotación de todo el grupo según posición del mouse (parallax)
-  group.rotation.y += ((mouseNDC.x * 0.25) - group.rotation.y) * 0.03;
-  group.rotation.x += ((mouseNDC.y * 0.08) - group.rotation.x) * 0.03;
-
-  for (const s of spheres) {
-    const { mesh, basePos, floatSpeed, floatAmp, phase, rotSpeed, velocity } = s;
-
-    // flotación idle
-    const floatTarget = basePos.clone();
-    floatTarget.y += Math.sin(t * floatSpeed + phase) * floatAmp;
-    floatTarget.x += Math.cos(t * floatSpeed * 0.6 + phase) * (floatAmp * 0.4);
-
-    // repulsión del cursor
-    if (hasPointer) {
-      const dx = mesh.position.x - cursorWorldPos.x;
-      const dy = mesh.position.y - cursorWorldPos.y;
-      const dz = mesh.position.z - cursorWorldPos.z;
-      const distSq = dx * dx + dy * dy + dz * dz;
-      const dist = Math.sqrt(distSq);
-
-      if (dist < REPEL_RADIUS) {
-        const force = (1 - dist / REPEL_RADIUS) * REPEL_STRENGTH;
-        velocity.x += (dx / (dist || 1)) * force * 0.02;
-        velocity.y += (dy / (dist || 1)) * force * 0.02;
-        velocity.z += (dz / (dist || 1)) * force * 0.02;
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
       }
-    }
-
-    // resorte hacia la posición flotante objetivo
-    velocity.x += (floatTarget.x - mesh.position.x) * SPRING;
-    velocity.y += (floatTarget.y - mesh.position.y) * SPRING;
-    velocity.z += (floatTarget.z - mesh.position.z) * SPRING;
-
-    velocity.multiplyScalar(DAMPING);
-    mesh.position.add(velocity);
-
-    mesh.rotation.x += rotSpeed * 0.01;
-    mesh.rotation.y += rotSpeed * 0.015;
-  }
-
-  // --- Resolver colisiones: evita que las esferas se clipeen entre sí (suave, sin pelear por espacio) ---
-  const COLLISION_PADDING = 0.05;
-  const COLLISION_SOFTNESS = 0.5; // corrección parcial por frame, evita oscilaciones
-  for (let i = 0; i < spheres.length; i++) {
-    const meshA = spheres[i].mesh;
-    const ra = meshA.scale.x;
-    for (let j = i + 1; j < spheres.length; j++) {
-      const meshB = spheres[j].mesh;
-      const rb = meshB.scale.x;
-      const minDist = ra + rb + COLLISION_PADDING;
-
-      const dx = meshB.position.x - meshA.position.x;
-      const dy = meshB.position.y - meshA.position.y;
-      const dz = meshB.position.z - meshA.position.z;
-      const distSq = dx * dx + dy * dy + dz * dz;
-
-      if (distSq > 0.0001 && distSq < minDist * minDist) {
-        const dist = Math.sqrt(distSq);
-        const overlap = (minDist - dist) * 0.5 * COLLISION_SOFTNESS;
-        const nx = dx / dist, ny = dy / dist, nz = dz / dist;
-
-        meshA.position.x -= nx * overlap;
-        meshA.position.y -= ny * overlap;
-        meshA.position.z -= nz * overlap;
-
-        meshB.position.x += nx * overlap;
-        meshB.position.y += ny * overlap;
-        meshB.position.z += nz * overlap;
-      }
-    }
-  }
-
-  // --- Actualizar los cilindros de los enlaces fijos (el set de pares no cambia) ---
-  for (let k = 0; k < links.length; k++) {
-    const [i, j] = links[k];
-    const a = spheres[i].mesh.position;
-    const b = spheres[j].mesh.position;
-
-    _linkDir.subVectors(b, a);
-    const length = _linkDir.length();
-    _linkMid.addVectors(a, b).multiplyScalar(0.5);
-    _linkDir.normalize();
-    _linkQuat.setFromUnitVectors(_upAxis, _linkDir);
-    _linkScale.set(1, length, 1);
-
-    _linkMatrix.compose(_linkMid, _linkQuat, _linkScale);
-    linkMesh.setMatrixAt(k, _linkMatrix);
-  }
-  linkMesh.instanceMatrix.needsUpdate = true;
-
-  renderer.render(scene, camera);
-}
-
-animate();
-</script>
+    </script>
+    <script type="module" src="hero-scene.js"></script>
   </body>
 </html>

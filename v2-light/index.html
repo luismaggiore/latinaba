@@ -56,12 +56,17 @@
       </div>
     </nav>
 
-    <!-- Canvas Background -->
+    <!-- Canvas Background: debe vivir fuera de #smooth-wrapper/#smooth-content.
+         ScrollSmoother aplica un transform a #smooth-content para simular el
+         scroll suave, y ese transform crea un containing block nuevo que
+         rompe "position: fixed" en sus descendientes (el canvas terminaba
+         moviéndose con el scroll y solapando el footer, sobre todo en móvil). -->
+    <div id="stage"></div>
+
     <div id="smooth-wrapper">
       <div id="smooth-content">
         <!-- Hero Content -->
         <section class="hero-content bg-ltn">
-          <div id="stage"></div>
           <div class="fog-overlay"></div>
           <div class="container-fluid mb-custom z-2">
             <a class="navbar-brand" href="#">

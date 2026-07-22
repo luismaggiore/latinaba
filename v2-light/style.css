@@ -40,6 +40,12 @@ html {
   flex-direction: column;
   overflow: hidden;
   justify-content: end;
+  /* #stage vive ahora fuera de .hero-content (ver index.html) para que
+     "position: fixed" no se rompa con el transform de ScrollSmoother. Sin
+     este override, el background-color opaco de .bg-ltn (necesario en las
+     secciones siguientes para tapar el canvas al hacer scroll) también
+     taparía el canvas aquí, en el propio hero. */
+  background-color: transparent;
 }
 
 .container-fluid {

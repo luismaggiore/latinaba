@@ -174,6 +174,7 @@ function initLatamMap() {
       .data(LEGEND_CATS)
       .join("div")
       .attr("class", "legend-item")
+      .attr("data-cat", (d) => d)
       .on("click", function (evt, cat) {
         onClick(cat);
       });
@@ -184,6 +185,18 @@ function initLatamMap() {
       .style("background", (d) => CATEGORY_COLOR[d]);
     sel.append("span").text((d) => CATEGORY_LABEL[d]);
     return sel;
+  }
+
+  // Inject hint badge into map-wrap if not present
+  const mapWrap = document.querySelector(".map-wrap");
+  if (mapWrap && !mapWrap.querySelector(".map-hint-badge")) {
+    const hintBadge = document.createElement("div");
+    hintBadge.className = "map-hint-badge";
+    hintBadge.innerHTML = `
+      <span class="pulse-dot"></span>
+      <span class="hint-text">Click to explore</span>
+    `;
+    mapWrap.appendChild(hintBadge);
   }
 
   d3.json("https://unpkg.com/world-atlas@2/countries-110m.json")
@@ -243,22 +256,25 @@ function initLatamMap() {
         .attr("data-id", (d) => d.id)
         .attr("d", path)
         .attr("fill", colorOf)
-        .attr("stroke", "#1e293b")
+        .attr("stroke", "#ffffff")
         .attr("stroke-width", 0.75)
         .on("mousemove", (evt, d) =>
           showTooltip(detailHtml(d.id, d.properties.name), evt),
         )
         .on("mouseleave", hideTooltip)
         .on("mouseenter", function () {
-          d3.select(this).attr("stroke-width", 2.2).attr("stroke", "#ffffff");
+          d3.select(this).attr("stroke-width", 2.2).attr("stroke", "#0f172a");
         })
         .on("mouseout", function () {
-          d3.select(this).attr("stroke-width", 0.75).attr("stroke", "#1e293b");
+          d3.select(this).attr("stroke-width", 0.75).attr("stroke", "#ffffff");
         });
 
       let filter = null;
-      buildLegend("#legend1", (cat) => {
-        filter = filter === cat ? null : cat;
+      let hasUserInteracted = false;
+      let autoTimeline = null;
+
+      function applyFilter(cat) {
+        filter = cat;
         paths.classed("dim", function () {
           if (!filter) return false;
           const id = d3.select(this).attr("data-id");
@@ -267,10 +283,108 @@ function initLatamMap() {
             : "none";
           return c !== filter;
         });
+
+        // Bring active category paths to front for visual crispness
+        if (filter) {
+          paths.each(function () {
+            const el = d3.select(this);
+            const id = el.attr("data-id");
+            const c = countryData[id] ? countryData[id].category : "none";
+            if (c === filter) {
+              el.raise();
+            }
+          });
+        }
+
         d3.select("#legend1")
           .selectAll(".legend-item")
-          .classed("dim", (d2) => filter && d2 !== filter);
+          .classed("dim", (d2) => filter && d2 !== filter)
+          .classed("active-cat", (d2) => filter === d2);
+      }
+
+      buildLegend("#legend1", (cat) => {
+        hasUserInteracted = true;
+        if (autoTimeline) {
+          autoTimeline.kill();
+          autoTimeline = null;
+        }
+        const nextFilter = filter === cat ? null : cat;
+        applyFilter(nextFilter);
       });
+
+      // Clicking directly on map countries interrupts sequence & sets filter
+      paths.on("click", (evt, d) => {
+        hasUserInteracted = true;
+        if (autoTimeline) {
+          autoTimeline.kill();
+          autoTimeline = null;
+        }
+        const cat = countryData[d.id] ? countryData[d.id].category : null;
+        if (cat && cat !== "none") {
+          const nextFilter = filter === cat ? null : cat;
+          applyFilter(nextFilter);
+        }
+      });
+
+      // GSAP ScrollTrigger Sequence
+      if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+        const triggerTarget = document.querySelector("#map-section") || document.querySelector(".map-wrap");
+        if (triggerTarget) {
+          ScrollTrigger.create({
+            trigger: triggerTarget,
+            start: "top 70%",
+            once: true,
+            onEnter: () => {
+              if (hasUserInteracted) return;
+
+              autoTimeline = gsap.timeline({
+                onComplete: () => {
+                  autoTimeline = null;
+                }
+              });
+
+              // Sequence requested: latinaba -> hub -> ior -> experience -> reset
+              const cats = ["latinaba", "hub", "ior", "experience"];
+              const stepDuration = 0.6; // seconds per category display (fast & dynamic)
+
+              cats.forEach((cat, idx) => {
+                autoTimeline.add(() => {
+                  if (!hasUserInteracted) {
+                    applyFilter(cat);
+
+                    // Animate legend item button pulse
+                    const btn = document.querySelector(`.legend-item[data-cat="${cat}"]`);
+                    if (btn) {
+                      gsap.fromTo(
+                        btn,
+                        { scale: 1.12, translateY: -3 },
+                        { scale: 1, translateY: 0, duration: 0.3, ease: "back.out(2)" }
+                      );
+                    }
+                  }
+                }, idx * stepDuration);
+              });
+
+              // Return to initial state (null filter)
+              autoTimeline.add(() => {
+                if (!hasUserInteracted) {
+                  applyFilter(null);
+
+                  // Pulse the map hint badge to invite interaction
+                  const badge = document.querySelector(".map-hint-badge");
+                  if (badge) {
+                    gsap.fromTo(
+                      badge,
+                      { scale: 1.15, boxShadow: "0 0 20px rgba(0, 168, 204, 0.5)" },
+                      { scale: 1, boxShadow: "0 4px 14px rgba(0, 0, 0, 0.08)", duration: 0.8, ease: "power2.out" }
+                    );
+                  }
+                }
+              }, cats.length * stepDuration);
+            }
+          });
+        }
+      }
     })
     .catch((err) => {
       document.body.insertAdjacentHTML(

@@ -7,13 +7,13 @@ import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 RectAreaLightUniformsLib.init();
 
-const BG = 0x01040f;
+const BG = 0xf8fafc;
 
 const container = document.getElementById('stage');
 if (container) {
   // --- Escena base ---
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x01040f, 0.032);
+  scene.fog = new THREE.FogExp2(0xf8fafc, 0.025);
 
   const camera = new THREE.PerspectiveCamera(
     28,
@@ -30,19 +30,28 @@ if (container) {
   renderer.setClearColor(BG, 1);
   container.appendChild(renderer.domElement);
 
-  // --- Post-procesado: sutil profundidad de campo ---
+  // --- Post-procesado: Profundidad de Campo (Depth of Field) sutil con OutputPass ---
   const composer = new EffectComposer(renderer);
-  composer.addPass(new RenderPass(scene, camera));
 
+  // 1. Render inicial de la escena 3D
+  const renderPass = new RenderPass(scene, camera);
+  composer.addPass(renderPass);
+
+  // 2. BokehPass con profundidad de campo sutil (focus en z = -5, aperture suave)
   const bokehPass = new BokehPass(scene, camera, {
-    focus: 24,
-    aperture: 0.0009,
-    maxblur: 0.006,
+    focus: 35.0,         // Plano de enfoque medio (35 unidades desde la cámara)
+    aperture: 0.001,     // Apertura suave para un desenfoque sutil y elegante
+    maxblur: 0.015,      // Desenfoque máximo contenido
+    width: window.innerWidth,
+    height: window.innerHeight,
   });
   composer.addPass(bokehPass);
-  composer.addPass(new OutputPass());
 
-  // --- Fondo degradado ---
+  // 3. OutputPass para mantener los tonos de color exactos en sRGB
+  const outputPass = new OutputPass();
+  composer.addPass(outputPass);
+
+  // --- Fondo degradado claro ---
   function buildBackgroundTexture(aspect) {
     const height = 1024;
     const width = Math.round(height * aspect);
@@ -51,12 +60,11 @@ if (container) {
     canvas.height = height;
 
     const ctx = canvas.getContext('2d');
-    const gradient = ctx.createLinearGradient(0, 0, 0, height);
-    gradient.addColorStop(0, 'rgb(17, 49, 90)');
-    gradient.addColorStop(0.2, 'rgb(18, 24, 49)');
-    gradient.addColorStop(0.4, 'rgb(3, 9, 36)');
-    gradient.addColorStop(1, 'rgb(3, 9, 36)');
-    ctx.fillStyle = gradient;
+    const grad = ctx.createLinearGradient(0, 0, width, height);
+    grad.addColorStop(0, '#e5eaf0');
+    grad.addColorStop(0.5, '#f7f7f7');
+    grad.addColorStop(1, '#e5eaf0');
+    ctx.fillStyle = grad;
     ctx.fillRect(0, 0, width, height);
 
     const texture = new THREE.CanvasTexture(canvas);
@@ -72,36 +80,31 @@ if (container) {
   }
   updateBackground();
 
-  // --- Iluminación ---
-  const areaLight = new THREE.RectAreaLight(0x86a8e0, 35, 2, 103);
-  const areaLight2 = new THREE.RectAreaLight(0x86a8e0, 32, 2, 103);
-  areaLight2.position.set(-50, 1, -50);
-  areaLight.position.set(20, 21, 0);
+  // --- Iluminación pura blanca ---
+  const areaLight = new THREE.RectAreaLight(0xffffff, 5, 50, 403);
+  const areaLight2 = new THREE.RectAreaLight(0xffffff, 1.4, 400, 403);
+  areaLight2.position.set(-140, -41, 25);
+  areaLight.position.set(90, 81, 40);
   areaLight.lookAt(0, 3, 0);
   areaLight2.lookAt(0, 3, 0);
   scene.add(areaLight);
   scene.add(areaLight2);
 
-  const backLight = new THREE.DirectionalLight("skyblue", 20);
-  backLight.position.set(-14, 43, -100);
-  scene.add(backLight);
-
+  // Paleta de blancos y cremas elegantes
   const palette = [
-
-    0x223f9a,
-
+    0xffffff, // Blanco puro perla
   ];
 
   // --- Grupo y esferas ---
   const group = new THREE.Group();
   scene.add(group);
 
-  const SPHERE_COUNT = 90;
+  const SPHERE_COUNT = 140;
   const spheres = [];
   const placedSpheres = [];
 
   function findNonOverlappingPosition(radius) {
-    const spreadX = 34, yMin = 3, yMax = 10.5, zMin = -12, zMax = 6;
+    const spreadX = 38, yMin = 4, yMax = 14.5, zMin = -24, zMax = 6;
     const PADDING = 0.15;
     const MAX_ATTEMPTS = 60;
 
@@ -135,23 +138,22 @@ if (container) {
 
   // Geometría compartida + una única instancia de material (mismo color para
   // todas las esferas): permite renderizar todo el enjambre con InstancedMesh
-  // en vez de 90 Mesh/Material independientes, sin cambiar el resultado visual.
+  // en vez de 140 Mesh/Material independientes, sin cambiar el resultado visual.
   const geometry = new THREE.IcosahedronGeometry(1, 4);
   const coreGeometry = new THREE.SphereGeometry(1, 16, 16);
 
   const baseColor = new THREE.Color(palette[Math.floor(Math.random() * palette.length)]);
   const material = new THREE.MeshPhysicalMaterial({
     color: baseColor,
-    emissive: baseColor.clone().multiplyScalar(0.38),
-    emissiveIntensity: 0.8,
-    roughness: 0.45,
-    metalness: 0.1,
-    clearcoat: 0.5,
-    clearcoatRoughness: 0.5,
+    emissive: baseColor.clone().multiplyScalar(0.15),
+    emissiveIntensity: 0.2,
+    roughness: 0.3,
+    metalness: 0,
   });
   const coreMaterial = new THREE.MeshBasicMaterial({
-    color: 0x94b8ea,
-    opacity: 1,
+    color: 0xffffff,
+    opacity: 0.65,
+    transparent: true,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
   });
@@ -181,7 +183,7 @@ if (container) {
   }
 
   const MAX_LINKS = 100;
-  const LINK_DISTANCE = 4.0;
+  const LINK_DISTANCE = 9.0;
   const MIN_CONNECTIONS = 1;
   const MAX_CONNECTIONS = 3;
 
@@ -224,11 +226,10 @@ if (container) {
   const LINK_RADIUS = 0.03;
   const linkGeometry = new THREE.CylinderGeometry(LINK_RADIUS, LINK_RADIUS, 1, 12, 1, false);
   const linkMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0x8fa8d6,
-    roughness: 1,
+    color: 0xd1d5db,
+    emissiveIntensity: 3,
+    roughness: 0.4,
     metalness: 0,
-    clearcoat: 0.1,
-    clearcoatRoughness: 0.5,
   });
   const linkMesh = new THREE.InstancedMesh(linkGeometry, linkMaterial, Math.max(links.length, 1));
   group.add(linkMesh);
@@ -253,7 +254,6 @@ if (container) {
   const cursorWorldPos = new THREE.Vector3();
   let hasPointer = false;
 
-  // Intercepción del Scroll suave
   let targetScrollY = 0;
   let currentScrollY = 0;
 
@@ -274,15 +274,35 @@ if (container) {
     }
   }, { passive: true });
 
+  function updateCameraAspect() {
+    const aspect = window.innerWidth / window.innerHeight;
+    camera.aspect = aspect;
+
+    if (aspect < 1.0) {
+      camera.fov = 42;
+      camera.position.set(0, 3.5, 32);
+      group.scale.setScalar(0.85);
+    } else if (aspect < 1.4) {
+      camera.fov = 34;
+      camera.position.set(0, 3.2, 31);
+      group.scale.setScalar(0.92);
+    } else {
+      camera.fov = 28;
+      camera.position.set(0, 3, 30);
+      group.scale.setScalar(1.0);
+    }
+    camera.updateProjectionMatrix();
+  }
+  updateCameraAspect();
+
   let resizeRAF = null;
   window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
+    updateCameraAspect();
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.innerWidth < 768 ? 1.5 : 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
     composer.setSize(window.innerWidth, window.innerHeight);
+    bokehPass.setSize(window.innerWidth, window.innerHeight);
 
-    // El fondo (canvas 2D + textura) se reconstruye una sola vez por ráfaga
-    // de resize, en vez de en cada evento individual mientras se arrastra.
     if (resizeRAF) cancelAnimationFrame(resizeRAF);
     resizeRAF = requestAnimationFrame(updateBackground);
   });
@@ -297,7 +317,6 @@ if (container) {
     requestAnimationFrame(animate);
     const t = clock.getElapsedTime();
 
-    // Interpolación suave del Scroll (LERP)
     currentScrollY += (targetScrollY - currentScrollY) * 0.05;
     const scrollFactor = currentScrollY * 0.0025;
 
@@ -306,10 +325,10 @@ if (container) {
       raycaster.ray.intersectPlane(interactionPlane, cursorWorldPos);
     }
 
-    // Movimiento combinado de Parallax con Cursor + Scroll sutil
+    const mobileYOffset = window.innerWidth < 768 ? 2.5 : 0;
     group.rotation.y += ((mouseNDC.x * 0.25) + (scrollFactor * 0.15) - group.rotation.y) * 0.03;
     group.rotation.x += ((mouseNDC.y * 0.08) - (scrollFactor * 0.2) - group.rotation.x) * 0.03;
-    group.position.y = -scrollFactor * 0.8;
+    group.position.y = -scrollFactor * 0.8 + mobileYOffset;
 
     for (const s of spheres) {
       const { position, basePos, floatSpeed, floatAmp, phase, rotSpeed, velocity } = s;

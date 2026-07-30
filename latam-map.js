@@ -187,16 +187,26 @@ function initLatamMap() {
     return sel;
   }
 
-  // Inject hint badge into map-wrap if not present
+  // Inject hint badge and selected status pill into map-wrap if present
+  let selectedPill = null;
   const mapWrap = document.querySelector(".map-wrap");
-  if (mapWrap && !mapWrap.querySelector(".map-hint-badge")) {
-    const hintBadge = document.createElement("div");
-    hintBadge.className = "map-hint-badge";
-    hintBadge.innerHTML = `
-      <span class="pulse-dot"></span>
-      <span class="hint-text">Click to explore</span>
-    `;
-    mapWrap.appendChild(hintBadge);
+  if (mapWrap) {
+    if (!mapWrap.querySelector(".map-hint-badge")) {
+      const hintBadge = document.createElement("div");
+      hintBadge.className = "map-hint-badge";
+      hintBadge.innerHTML = `
+        <span class="pulse-dot"></span>
+        <span class="hint-text">Click to explore</span>
+      `;
+      mapWrap.appendChild(hintBadge);
+    }
+    
+    selectedPill = mapWrap.querySelector(".map-selected-pill");
+    if (!selectedPill) {
+      selectedPill = document.createElement("div");
+      selectedPill.className = "map-selected-pill";
+      mapWrap.appendChild(selectedPill);
+    }
   }
 
   d3.json("https://unpkg.com/world-atlas@2/countries-110m.json")
@@ -270,8 +280,10 @@ function initLatamMap() {
         });
 
       let filter = null;
-      let hasUserInteracted = false;
-      let autoTimeline = null;
+      const categories = ["latinaba", "hub", "ior", "experience"];
+      let currentIndex = -1;
+      let isPaused = false;
+      let autoPlayInterval = null;
 
       function applyFilter(cat) {
         filter = cat;
@@ -300,33 +312,81 @@ function initLatamMap() {
           .selectAll(".legend-item")
           .classed("dim", (d2) => filter && d2 !== filter)
           .classed("active-cat", (d2) => filter === d2);
+
+        // Update selected status pill
+        if (selectedPill) {
+          const color = cat ? CATEGORY_COLOR[cat] : "#94a3b8";
+          const label = cat ? CATEGORY_LABEL[cat] : "Showing All Countries";
+          selectedPill.innerHTML = `
+            <span class="status-dot" style="background-color: ${color}; width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+            <span class="status-text">${label}</span>
+          `;
+        }
+      }
+
+      function startAutoplay() {
+        if (autoPlayInterval) clearInterval(autoPlayInterval);
+        autoPlayInterval = setInterval(() => {
+          if (!isPaused) {
+            currentIndex = (currentIndex + 1) % categories.length;
+            const cat = categories[currentIndex];
+            applyFilter(cat);
+
+            // Animate legend item button pulse
+            const btn = document.querySelector(`.legend-item[data-cat="${cat}"]`);
+            if (btn && typeof gsap !== "undefined") {
+              gsap.fromTo(
+                btn,
+                { scale: 1.12, translateY: -3 },
+                { scale: 1, translateY: 0, duration: 0.3, ease: "back.out(2)" }
+              );
+            }
+          }
+        }, 3000);
       }
 
       buildLegend("#legend1", (cat) => {
-        hasUserInteracted = true;
-        if (autoTimeline) {
-          autoTimeline.kill();
-          autoTimeline = null;
-        }
         const nextFilter = filter === cat ? null : cat;
         applyFilter(nextFilter);
+        if (nextFilter) {
+          currentIndex = categories.indexOf(nextFilter);
+        } else {
+          currentIndex = -1;
+        }
       });
 
-      // Clicking directly on map countries interrupts sequence & sets filter
+      // Clicking directly on map countries sets filter & updates index
       paths.on("click", (evt, d) => {
-        hasUserInteracted = true;
-        if (autoTimeline) {
-          autoTimeline.kill();
-          autoTimeline = null;
-        }
         const cat = countryData[d.id] ? countryData[d.id].category : null;
         if (cat && cat !== "none") {
           const nextFilter = filter === cat ? null : cat;
           applyFilter(nextFilter);
+          if (nextFilter) {
+            currentIndex = categories.indexOf(nextFilter);
+          } else {
+            currentIndex = -1;
+          }
         }
       });
 
-      // GSAP ScrollTrigger Sequence
+      // Hover to pause auto-rotation
+      const pauseTargets = [
+        document.querySelector(".map-wrap"),
+        document.querySelector("#legend1")
+      ];
+
+      pauseTargets.forEach(target => {
+        if (target) {
+          target.addEventListener("mouseenter", () => {
+            isPaused = true;
+          });
+          target.addEventListener("mouseleave", () => {
+            isPaused = false;
+          });
+        }
+      });
+
+      // Start autoplay when map is scrolled into view (using ScrollTrigger)
       if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
         const triggerTarget = document.querySelector("#map-section") || document.querySelector(".map-wrap");
         if (triggerTarget) {
@@ -335,55 +395,16 @@ function initLatamMap() {
             start: "top 70%",
             once: true,
             onEnter: () => {
-              if (hasUserInteracted) return;
-
-              autoTimeline = gsap.timeline({
-                onComplete: () => {
-                  autoTimeline = null;
-                }
-              });
-
-              // Sequence requested: latinaba -> hub -> ior -> experience -> reset
-              const cats = ["latinaba", "hub", "ior", "experience"];
-              const stepDuration = 0.6; // seconds per category display (fast & dynamic)
-
-              cats.forEach((cat, idx) => {
-                autoTimeline.add(() => {
-                  if (!hasUserInteracted) {
-                    applyFilter(cat);
-
-                    // Animate legend item button pulse
-                    const btn = document.querySelector(`.legend-item[data-cat="${cat}"]`);
-                    if (btn) {
-                      gsap.fromTo(
-                        btn,
-                        { scale: 1.12, translateY: -3 },
-                        { scale: 1, translateY: 0, duration: 0.3, ease: "back.out(2)" }
-                      );
-                    }
-                  }
-                }, idx * stepDuration);
-              });
-
-              // Return to initial state (null filter)
-              autoTimeline.add(() => {
-                if (!hasUserInteracted) {
-                  applyFilter(null);
-
-                  // Pulse the map hint badge to invite interaction
-                  const badge = document.querySelector(".map-hint-badge");
-                  if (badge) {
-                    gsap.fromTo(
-                      badge,
-                      { scale: 1.15, boxShadow: "0 0 20px rgba(0, 168, 204, 0.5)" },
-                      { scale: 1, boxShadow: "0 4px 14px rgba(0, 0, 0, 0.08)", duration: 0.8, ease: "power2.out" }
-                    );
-                  }
-                }
-              }, cats.length * stepDuration);
+              currentIndex = 0;
+              applyFilter(categories[currentIndex]);
+              startAutoplay();
             }
           });
         }
+      } else {
+        currentIndex = 0;
+        applyFilter(categories[currentIndex]);
+        startAutoplay();
       }
     })
     .catch((err) => {

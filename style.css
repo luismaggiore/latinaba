@@ -47,7 +47,22 @@ html {
      taparía el canvas aquí, en el propio hero. */
   background-color: transparent;
 }
-
+.hero-content-2 {
+  position: relative;
+  z-index: 1;
+  padding-top: clamp(10vw,25vh,2600px);
+  color: var(--text-light);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  justify-content: end;
+  /* #stage vive ahora fuera de .hero-content (ver index.html) para que
+     "position: fixed" no se rompa con el transform de ScrollSmoother. Sin
+     este override, el background-color opaco de .bg-ltn (necesario en las
+     secciones siguientes para tapar el canvas al hacer scroll) también
+     taparía el canvas aquí, en el propio hero. */
+  background-color: transparent;
+}
 .container-fluid {
   padding: 0px clamp(10px, 6vw, 1000px);
 }

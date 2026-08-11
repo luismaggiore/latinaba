@@ -146,7 +146,16 @@ const AMERICAS_IDS = [
   "858",
 ];
 
+// Tracks the currently running autoplay interval across repeated swup page
+// visits, so re-entering the map page never stacks up multiple intervals.
+let stopMapAutoplay = null;
+
 function initLatamMap() {
+  if (stopMapAutoplay) {
+    stopMapAutoplay();
+    stopMapAutoplay = null;
+  }
+
   const svg = d3.select("#svg1");
   if (svg.empty()) return;
 
@@ -326,6 +335,7 @@ function initLatamMap() {
 
       function startAutoplay() {
         if (autoPlayInterval) clearInterval(autoPlayInterval);
+        stopMapAutoplay = () => clearInterval(autoPlayInterval);
         autoPlayInterval = setInterval(() => {
           if (!isPaused) {
             currentIndex = (currentIndex + 1) % categories.length;

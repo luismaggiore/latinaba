@@ -22,7 +22,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="style.css" />
 
-
     <!-- D3.js Library for Donut Chart -->
     <script src="https://unpkg.com/d3@7/dist/d3.min.js"></script>
 
@@ -49,14 +48,21 @@
   </head>
   <body class="bg-ltn">
     <!-- Header Navigation -->
-      <nav class=" navbar navbar-expand-lg navbar-light fixed-top bg-transparent container-fluid justify-content-end py-2 ">
-        <div class="row">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-                                <ul class="navbar-nav ms-auto">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-transparent container-fluid justify-content-end py-2">
+      <div class="row">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
             <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
             <li class="nav-item"><a class="nav-link" href="leadership.html">Leadership Team</a></li>
             <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
@@ -67,65 +73,60 @@
             <li class="nav-item"><a class="nav-link" href="resources.html">Resources</a></li>
             <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
           </ul>
-          </div>
         </div>
-      </nav>
+      </div>
+    </nav>
 
     <!-- Smooth Scroll Wrapper -->
     <div id="smooth-wrapper">
       <div id="smooth-content">
 
         <!-- Hero Content Section -->
-        <section class="hero-content bg-ltn pt-5">
+        <header class="hero-content bg-ltn">
           <div class="fog-overlay"></div>
-     
-          <div class="container-fluid py-3 z-2">
-            <div class="row align-items-end  mb-custom" >
-              <div class="col-lg">
-                <div class="">
-                   
-                      <img class="logo-hero mb-custom" src="logo-new.svg" alt="LatinaBA Logo" />
-                 
+          <div class="enter z-2">
+            <div class="container-fluid py-3 z-2">
+              <div class="row align-items-end mb-custom">
+                <div class="col-lg">
+                  <img class="logo-hero mb-custom" src="logo-new.svg" alt="LatinaBA Logo" />
                   <h1 class="hero-text">
                     Therapeutic area experience in
                     <span class="highlight">clinical trials</span>
                   </h1>
                 </div>
+                <div class="col-lg-4 mb-3">
+                  <p class="hero-p">
+                    For more than 17 years, LatinaBA has partnered with pharmaceutical, biotech, and medical device companies as experts in the region, conducting all phases of clinical trials across 135+ completed projects and 34+ therapeutic areas in Latin America.
+                  </p>
+                  <div class="line d-none d-lg-block mb-4"></div>
+                  <a class="btn btn-latinaba" href="leadership.html"> Meet our Experts </a>
+                </div>
               </div>
-              <div class="col-lg-4 mb-3">
-                              <p class="hero-p">
-                  For more than 17 years, LatinaBA has partnered with pharmaceutical, biotech, and medical device companies as experts in the region, conducting all phases of clinical trials across 135+ completed projects and 34+ therapeutic areas in Latin America.
-                </p>
-                <div class="line d-none d-lg-block"></div>
-                <a class="btn mt-4 btn-latinaba" href="leadership.html"> Meet our Experts </a>
-      
+            </div>
 
+            <!-- Stats Display -->
+            <div class="container-fluid z-2 pb-3">
+              <div class="line mb-custom"></div>
+              <div class="row gx-0 justify-content-between pb-hero stats-display">
+                <div class="col-lg-auto col-6">
+                  <p><span>17 </span> Years of experience</p>
+                </div>
+                <div class="col-lg-auto col-6">
+                  <p><span>135+ </span> Completed projects</p>
+                </div>
+                <div class="col-lg-auto col-6">
+                  <p><span>95 </span> Different sponsors</p>
+                </div>
+                <div class="col-lg-auto col-6">
+                  <p><span>16 </span> Countries</p>
+                </div>
+                <div class="col-lg-auto col-12" style="border-right: none">
+                  <p><span>34+ </span> Therapeutic areas</p>
+                </div>
               </div>
             </div>
           </div>
-
-          <!-- Stats Display -->
-          <div class="container-fluid z-2 pb-3">
-            <div class="line mb-custom"></div>
-            <div class="row gx-0  justify-content-between pb-hero stats-display">
-              <div class="col-lg-auto col-6">
-                <p><span>17 </span> Years of experience</p>
-              </div>
-              <div class="col-lg-auto col-6">
-                <p><span>135+ </span> Completed projects</p>
-              </div>
-              <div class="col-lg-auto col-6">
-                <p><span>95 </span> Different sponsors</p>
-              </div>
-              <div class="col-lg-auto col-6">
-                <p><span>16 </span> Countries</p>
-              </div>
-              <div class="col-lg-auto col-12" style="border-right: none">
-                <p><span>34+ </span> Therapeutic areas</p>
-              </div>
-            </div>
-          </div>
-        </section>
+        </header>
 
         <!-- Donut Chart Section (Projects by Phase & Indication) -->
         <section class="bg-ltn py-4 z-2">
@@ -143,7 +144,7 @@
                   We have extensive experience in all phases of
                   <strong>Clinical Research</strong>
                 </h2>
-                <p class=" mb-4">
+                <p class="mb-4">
                   Our clinical operations portfolio spans Phase I (First-In-Man), Phase II, Phase III, Phase IV, Observational (Obs) studies, and Medical Device research conducted to strict international ICH-GCP standards.
                 </p>
                 <ul class="presence">
@@ -155,10 +156,11 @@
                 </ul>
               </div>
             </div>
+          </div>
         </section>
 
         <!-- Therapeutic Area Experience Section -->
-        <section class="py-5 bg-ltn">
+        <section class="py-5 bg-ltn z-2">
           <div class="container-fluid">
             <div class="row mb-5 align-items-end justify-content-between">
               <div class="col-lg-7 mb-3 mb-lg-0">
@@ -178,9 +180,432 @@
               </div>
             </div>
 
-            <!-- Grid of 21 Therapeutic Area Cards -->
-            <div class="row gx-2 gy-2 " id="ta-cards-grid">
-              <!-- Dynamically populated from therapeuticAreasData -->
+            <!-- Grid of 21 Therapeutic Area Cards (Exact Repository Code) -->
+            <div class="row gx-2 gy-2" id="ta-cards-grid">
+
+              <!-- 1. Cardiovascular Diseases -->
+              <div class="col-lg-4 col-md-6 ta-card-item" data-title="cardiovascular diseases" data-conditions="atrial fibrillation cardiovascular heart failure revascularization aortic valve disease amyloid cardiomyopathy">
+                <div class="ta-card p-4 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                      <div>
+                        <h3 class="h5 mb-0 fw-bold text-dark">Cardiovascular Diseases</h3>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span class="condition-badge">Atrial Fibrillation</span>
+                      <span class="condition-badge">Cardiovascular Heart Failure</span>
+                      <span class="condition-badge">Revascularization</span>
+                      <span class="condition-badge">Aortic Valve Disease</span>
+                      <span class="condition-badge">Amyloid Cardiomyopathy</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. Critical Care & Nutrition -->
+              <div class="col-lg-4 col-md-6 ta-card-item" data-title="critical care & nutrition" data-conditions="community acquired pneumonia ards (acute respiratory distress)">
+                <div class="ta-card p-4 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                      <div>
+                        <h3 class="h5 mb-0 fw-bold text-dark">Critical Care & Nutrition</h3>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span class="condition-badge">Community Acquired Pneumonia</span>
+                      <span class="condition-badge">ARDS (Acute Respiratory Distress)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3. Dermatology -->
+              <div class="col-lg-4 col-md-6 ta-card-item" data-title="dermatology" data-conditions="acne vulgaris actinic keratosis">
+                <div class="ta-card p-4 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                      <div>
+                        <h3 class="h5 mb-0 fw-bold text-dark">Dermatology</h3>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span class="condition-badge">Acne Vulgaris</span>
+                      <span class="condition-badge">Actinic Keratosis</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4. Endocrine & Metabolic Disorders -->
+              <div class="col-lg-4 col-md-6 ta-card-item" data-title="endocrine & metabolic disorders" data-conditions="diabetes mellitus osteoporosis hypercholesterolemia growth hormone deficiency precocious puberty congenital adrenal hyperplasia wilson disease">
+                <div class="ta-card p-4 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                      <div>
+                        <h3 class="h5 mb-0 fw-bold text-dark">Endocrine & Metabolic Disorders</h3>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span class="condition-badge">Diabetes Mellitus</span>
+                      <span class="condition-badge">Osteoporosis</span>
+                      <span class="condition-badge">Hypercholesterolemia</span>
+                      <span class="condition-badge">Growth Hormone Deficiency</span>
+                      <span class="condition-badge">Precocious Puberty</span>
+                      <span class="condition-badge">Congenital Adrenal Hyperplasia</span>
+                      <span class="condition-badge">Wilson Disease</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 5. Infectious Diseases -->
+              <div class="col-lg-4 col-md-6 ta-card-item" data-title="infectious diseases" data-conditions="hiv/aids hepatitis b hepatitis c otitis media herpes simplex chagas disease influenza">
+                <div class="ta-card p-4 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                      <div>
+                        <h3 class="h5 mb-0 fw-bold text-dark">Infectious Diseases</h3>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span class="condition-badge">HIV/AIDS</span>
+                      <span class="condition-badge">Hepatitis B</span>
+                      <span class="condition-badge">Hepatitis C</span>
+                      <span class="condition-badge">Otitis Media</span>
+                      <span class="condition-badge">Herpes Simplex</span>
+                      <span class="condition-badge">Chagas Disease</span>
+                      <span class="condition-badge">Influenza</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 6. Immunology -->
+              <div class="col-lg-4 col-md-6 ta-card-item" data-title="immunology" data-conditions="hereditary angioedema">
+                <div class="ta-card p-4 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                      <div>
+                        <h3 class="h5 mb-0 fw-bold text-dark">Immunology</h3>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span class="condition-badge">Hereditary Angioedema</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 7. Musculoskeletal Diseases -->
+              <div class="col-lg-4 col-md-6 ta-card-item" data-title="musculoskeletal diseases" data-conditions="osteoarthritis rheumatoid arthritis">
+                <div class="ta-card p-4 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                      <div>
+                        <h3 class="h5 mb-0 fw-bold text-dark">Musculoskeletal Diseases</h3>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span class="condition-badge">Osteoarthritis</span>
+                      <span class="condition-badge">Rheumatoid Arthritis</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 8. Neurology -->
+              <div class="col-lg-4 col-md-6 ta-card-item" data-title="neurology" data-conditions="alzheimer disease post herpetic neuralgia duchenne's md epilepsy traumatic brain injury huntington disease spasticity relapsing multiple sclerosis amyloid polyneuropathy">
+                <div class="ta-card p-4 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                      <div>
+                        <h3 class="h5 mb-0 fw-bold text-dark">Neurology</h3>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span class="condition-badge">Alzheimer Disease</span>
+                      <span class="condition-badge">Post Herpetic Neuralgia</span>
+                      <span class="condition-badge">Duchenne's MD</span>
+                      <span class="condition-badge">Epilepsy</span>
+                      <span class="condition-badge">Traumatic Brain Injury</span>
+                      <span class="condition-badge">Huntington Disease</span>
+                      <span class="condition-badge">Spasticity</span>
+                      <span class="condition-badge">Relapsing Multiple Sclerosis</span>
+                      <span class="condition-badge">Amyloid Polyneuropathy</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 9. Nephrology & Renal -->
+              <div class="col-lg-4 col-md-6 ta-card-item" data-title="nephrology & renal" data-conditions="nephrotoxicity chronic kidney disease diabetic kidney disease">
+                <div class="ta-card p-4 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                      <div>
+                        <h3 class="h5 mb-0 fw-bold text-dark">Nephrology & Renal</h3>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span class="condition-badge">Nephrotoxicity</span>
+                      <span class="condition-badge">Chronic Kidney Disease</span>
+                      <span class="condition-badge">Diabetic Kidney Disease</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 10. Oncology -->
+              <div class="col-lg-4 col-md-6 ta-card-item" data-title="oncology" data-conditions="pancreatic cancer aml (acute myeloid leukemia) melanoma breast cancer neuroblastoma">
+                <div class="ta-card p-4 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                      <div>
+                        <h3 class="h5 mb-0 fw-bold text-dark">Oncology</h3>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span class="condition-badge">Pancreatic Cancer</span>
+                      <span class="condition-badge">AML (Acute Myeloid Leukemia)</span>
+                      <span class="condition-badge">Melanoma</span>
+                      <span class="condition-badge">Breast Cancer</span>
+                      <span class="condition-badge">Neuroblastoma</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 11. Ophthalmology -->
+              <div class="col-lg-4 col-md-6 ta-card-item" data-title="ophthalmology" data-conditions="uveitis glaucoma age related macular degeneration diabetic retinopathy">
+                <div class="ta-card p-4 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                      <div>
+                        <h3 class="h5 mb-0 fw-bold text-dark">Ophthalmology</h3>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span class="condition-badge">Uveitis</span>
+                      <span class="condition-badge">Glaucoma</span>
+                      <span class="condition-badge">Age Related Macular Degeneration</span>
+                      <span class="condition-badge">Diabetic Retinopathy</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 12. Psychiatry -->
+              <div class="col-lg-4 col-md-6 ta-card-item" data-title="psychiatry" data-conditions="bipolar disorder depression smoking cessation">
+                <div class="ta-card p-4 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                      <div>
+                        <h3 class="h5 mb-0 fw-bold text-dark">Psychiatry</h3>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span class="condition-badge">Bipolar Disorder</span>
+                      <span class="condition-badge">Depression</span>
+                      <span class="condition-badge">Smoking Cessation</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 13. Respiratory -->
+              <div class="col-lg-4 col-md-6 ta-card-item" data-title="respiratory" data-conditions="asthma copd acute bronchitis emphysema">
+                <div class="ta-card p-4 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                      <div>
+                        <h3 class="h5 mb-0 fw-bold text-dark">Respiratory</h3>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span class="condition-badge">Asthma</span>
+                      <span class="condition-badge">COPD</span>
+                      <span class="condition-badge">Acute Bronchitis</span>
+                      <span class="condition-badge">Emphysema</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 14. Vaccines -->
+              <div class="col-lg-4 col-md-6 ta-card-item" data-title="vaccines" data-conditions="h1n1 rotavirus meningococcal b lung carcinoma vaccine zika leprosy">
+                <div class="ta-card p-4 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                      <div>
+                        <h3 class="h5 mb-0 fw-bold text-dark">Vaccines</h3>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span class="condition-badge">H1N1</span>
+                      <span class="condition-badge">Rotavirus</span>
+                      <span class="condition-badge">Meningococcal B</span>
+                      <span class="condition-badge">Lung Carcinoma Vaccine</span>
+                      <span class="condition-badge">Zika</span>
+                      <span class="condition-badge">Leprosy</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 15. Vascular Diseases -->
+              <div class="col-lg-4 col-md-6 ta-card-item" data-title="vascular diseases" data-conditions="dvt (deep vein thrombosis) pe (pulmonary embolism) abdominal aorta aneurysm">
+                <div class="ta-card p-4 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                      <div>
+                        <h3 class="h5 mb-0 fw-bold text-dark">Vascular Diseases</h3>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span class="condition-badge">DVT (Deep Vein Thrombosis)</span>
+                      <span class="condition-badge">PE (Pulmonary Embolism)</span>
+                      <span class="condition-badge">Abdominal Aorta Aneurysm</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 16. Reproductive Health -->
+              <div class="col-lg-4 col-md-6 ta-card-item" data-title="reproductive health" data-conditions="contraception preeclampsia prevention">
+                <div class="ta-card p-4 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                      <div>
+                        <h3 class="h5 mb-0 fw-bold text-dark">Reproductive Health</h3>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span class="condition-badge">Contraception</span>
+                      <span class="condition-badge">Preeclampsia Prevention</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 17. Genetic -->
+              <div class="col-lg-4 col-md-6 ta-card-item" data-title="genetic" data-conditions="adrenoleukodystrophy">
+                <div class="ta-card p-4 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                      <div>
+                        <h3 class="h5 mb-0 fw-bold text-dark">Genetic</h3>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span class="condition-badge">Adrenoleukodystrophy</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 18. Cell Therapy & Transplant -->
+              <div class="col-lg-4 col-md-6 ta-card-item" data-title="cell therapy & transplant" data-conditions="ptld (post-transplant lymphoproliferative disorder)">
+                <div class="ta-card p-4 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                      <div>
+                        <h3 class="h5 mb-0 fw-bold text-dark">Cell Therapy & Transplant</h3>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span class="condition-badge">PTLD (Post-Transplant Lymphoproliferative Disorder)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 19. Hematology -->
+              <div class="col-lg-4 col-md-6 ta-card-item" data-title="hematology" data-conditions="von willebrand disease haemophilia">
+                <div class="ta-card p-4 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                      <div>
+                        <h3 class="h5 mb-0 fw-bold text-dark">
+                          Hematology <span class="badge bg-success text-white ms-1 align-middle" style="font-size: 0.65rem;">NEW</span>
+                        </h3>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span class="condition-badge">Von Willebrand Disease</span>
+                      <span class="condition-badge">Haemophilia</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 20. Orthopaedics -->
+              <div class="col-lg-4 col-md-6 ta-card-item" data-title="orthopaedics" data-conditions="spinal fusion">
+                <div class="ta-card p-4 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                      <div>
+                        <h3 class="h5 mb-0 fw-bold text-dark">
+                          Orthopaedics <span class="badge bg-success text-white ms-1 align-middle" style="font-size: 0.65rem;">NEW</span>
+                        </h3>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span class="condition-badge">Spinal Fusion</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 21. Urology -->
+              <div class="col-lg-4 col-md-6 ta-card-item" data-title="urology" data-conditions="erectile dysfunction">
+                <div class="ta-card p-4 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                      <div>
+                        <h3 class="h5 mb-0 fw-bold text-dark">Urology</h3>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span class="condition-badge">Erectile Dysfunction</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- Client Portfolio (Logos by Category): logos are placeholder
+             tiles for now. Category buttons reflect whichever category is
+             centered in the marquee as it scrolls, and clicking one jumps
+             the marquee to where that category starts. Counts come from
+             the client list spreadsheet (Type of Client column). -->
+        <section class="py-5 bg-ltn z-2">
+          <div class="container-fluid">
+            <div class="row mb-4">
+              <div class="col-lg-8">
+                <span class="label-section">Client Portfolio</span>
+                <h2 class="mb-0">
+                  Trusted by CROs, pharma, biotech, and medical device sponsors
+                </h2>
+              </div>
+            </div>
+
+            <div class="nav-tabs-custom mb-4" id="logo-category-selector">
+              <button class="tab-btn-custom active" type="button" data-cat="cro">CRO <span class="indication-badge ms-1">34</span></button>
+              <button class="tab-btn-custom" type="button" data-cat="pharma">Pharma <span class="indication-badge ms-1">22</span></button>
+              <button class="tab-btn-custom" type="button" data-cat="biotech">Biotech <span class="indication-badge ms-1">5</span></button>
+              <button class="tab-btn-custom" type="button" data-cat="device">Medical Device <span class="indication-badge ms-1">5</span></button>
+              <button class="tab-btn-custom" type="button" data-cat="academic">Academic / NGO / Gov. <span class="indication-badge ms-1">5</span></button>
+            </div>
+
+            <div class="logo-marquee" id="logo-marquee">
+              <div class="logo-marquee-track" id="logo-marquee-track">
+                <div class="logo-marquee-labels" id="logo-marquee-labels"></div>
+                <div class="logo-marquee-tiles" id="logo-marquee-tiles"></div>
+              </div>
             </div>
           </div>
         </section>
@@ -203,39 +628,21 @@
               <div class="col-md-4 mb-4 mb-md-0">
                 <h6 class="fw-bold mb-3">Quick Links</h6>
                 <ul class="list-unstyled">
-                  <li>
-                    <a href="why-latam.html" class="text-decoration-none">Why LATAM</a>
-                  </li>
-                  <li>
-                    <a href="services.html" class="text-decoration-none">Services</a>
-                  </li>
-                  <li>
-                    <a href="experience.html" class="text-decoration-none">Experience</a>
-                  </li>
-                  <li>
-                    <a href="leadership.html" class="text-decoration-none">Leadership Team</a>
-                  </li>
-                  <li>
-                    <a href="resources.html" class="text-decoration-none">Resources</a>
-                  </li>
-                  <li>
-                    <a href="contact.html" class="text-decoration-none">Contact</a>
-                  </li>
+                  <li><a href="why-latam.html" class="text-decoration-none">Why LATAM</a></li>
+                  <li><a href="services.html" class="text-decoration-none">Services</a></li>
+                  <li><a href="experience.html" class="text-decoration-none">Experience</a></li>
+                  <li><a href="leadership.html" class="text-decoration-none">Leadership Team</a></li>
+                  <li><a href="resources.html" class="text-decoration-none">Resources</a></li>
+                  <li><a href="contact.html" class="text-decoration-none">Contact</a></li>
                 </ul>
               </div>
 
               <!-- Column 3: Contact Info -->
               <div class="col-md-4">
                 <h6 class="fw-bold mb-3">Contact Info</h6>
-                <p class="mb-2">
-                  <strong>Email:</strong> info@latinaba.com
-                </p>
-                <p class="mb-2">
-                  <strong>Phone:</strong> +1 (555) 123-4567
-                </p>
-                <p>
-                  <strong>Address:</strong> 123 Clinical Research Ave, Medical City
-                </p>
+                <p class="mb-2"><strong>Email:</strong> info@latinaba.com</p>
+                <p class="mb-2"><strong>Phone:</strong> +1 (555) 123-4567</p>
+                <p><strong>Address:</strong> 123 Clinical Research Ave, Medical City</p>
               </div>
             </div>
 
@@ -243,9 +650,7 @@
 
             <div class="row">
               <div class="col-12 text-center">
-                <p class="small mb-0">
-                  &copy; 2024 Latin ABA. All rights reserved.
-                </p>
+                <p class="small mb-0">&copy; 2024 Latin ABA. All rights reserved.</p>
               </div>
             </div>
           </div>
@@ -254,224 +659,18 @@
       </div>
     </div>
 
-    <!-- GSAP Libraries -->
+    <!-- GSAP Libraries & ScrollSmoother -->
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollSmoother.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollToPlugin.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/SplitText.min.js"></script>
-
-    <!-- Bootstrap JS -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-      crossorigin="anonymous"
-    ></script>
-
-    <!-- Base de Datos & Lógica Exacta de experience-info.html -->
-    <script>
-      const therapeuticAreasData = [
-        {
-          id: 'cardio',
-          title: 'Cardiovascular Diseases',
-          icon: 'bi-heart-pulse-fill',
-          pillar: 'Internal Medicine',
-          conditions: ['Atrial Fibrillation', 'Cardiovascular Heart Failure', 'Revascularization', 'Aortic Valve Disease', 'Amyloid Cardiomyopathy']
-        },
-        {
-          id: 'critical',
-          title: 'Critical Care & Nutrition',
-          icon: 'bi-hospital-fill',
-          pillar: 'Internal Medicine',
-          conditions: ['Community Acquired Pneumonia', 'ARDS (Acute Respiratory Distress)']
-        },
-        {
-          id: 'derm',
-          title: 'Dermatology',
-          icon: 'bi-person-badge-fill',
-          pillar: 'Specialties',
-          conditions: ['Acne Vulgaris', 'Actinic Keratosis']
-        },
-        {
-          id: 'endocrine',
-          title: 'Endocrine & Metabolic Disorders',
-          icon: 'bi-droplet-half',
-          pillar: 'Internal Medicine',
-          conditions: ['Diabetes Mellitus', 'Osteoporosis', 'Hypercholesterolemia', 'Growth Hormone Deficiency', 'Precocious Puberty', 'Congenital Adrenal Hyperplasia', 'Wilson Disease']
-        },
-        {
-          id: 'infectious',
-          title: 'Infectious Diseases',
-          icon: 'bi-virus',
-          pillar: 'Infectious & Vaccines',
-          conditions: ['HIV/AIDS', 'Hepatitis B', 'Hepatitis C', 'Otitis Media', 'Herpes Simplex', 'Chagas Disease', 'Influenza']
-        },
-        {
-          id: 'immuno',
-          title: 'Immunology',
-          icon: 'bi-shield-check',
-          pillar: 'Oncology & Immunology',
-          conditions: ['Hereditary Angioedema']
-        },
-        {
-          id: 'musculo',
-          title: 'Musculoskeletal Diseases',
-          icon: 'bi-activity',
-          pillar: 'Specialties',
-          conditions: ['Osteoarthritis', 'Rheumatoid Arthritis']
-        },
-        {
-          id: 'neuro',
-          title: 'Neurology',
-          icon: 'bi-cpu-fill',
-          pillar: 'Neuro & Psychiatry',
-          conditions: ['Alzheimer Disease', 'Post Herpetic Neuralgia', "Duchenne's MD", 'Epilepsy', 'Traumatic Brain Injury', 'Huntington Disease', 'Spasticity', 'Relapsing Multiple Sclerosis', 'Amyloid Polyneuropathy']
-        },
-        {
-          id: 'nephro-renal',
-          title: 'Nephrology & Renal',
-          icon: 'bi-water',
-          pillar: 'Internal Medicine',
-          conditions: ['Nephrotoxicity', 'Chronic Kidney Disease', 'Diabetic Kidney Disease']
-        },
-        {
-          id: 'onco',
-          title: 'Oncology',
-          icon: 'bi-pie-chart-fill',
-          pillar: 'Oncology & Immunology',
-          conditions: ['Pancreatic Cancer', 'AML (Acute Myeloid Leukemia)', 'Melanoma', 'Breast Cancer', 'Neuroblastoma']
-        },
-        {
-          id: 'ophthalmo',
-          title: 'Ophthalmology',
-          icon: 'bi-eye-fill',
-          pillar: 'Specialties',
-          conditions: ['Uveitis', 'Glaucoma', 'Age Related Macular Degeneration', 'Diabetic Retinopathy']
-        },
-        {
-          id: 'psychiatry',
-          title: 'Psychiatry',
-          icon: 'bi-emoji-smile-fill',
-          pillar: 'Neuro & Psychiatry',
-          conditions: ['Bipolar Disorder', 'Depression', 'Smoking Cessation']
-        },
-        {
-          id: 'respiratory',
-          title: 'Respiratory',
-          icon: 'bi-wind',
-          pillar: 'Internal Medicine',
-          conditions: ['Asthma', 'COPD', 'Acute Bronchitis', 'Emphysema']
-        },
-        {
-          id: 'vaccines',
-          title: 'Vaccines',
-          icon: 'bi-syringe-fill',
-          pillar: 'Infectious & Vaccines',
-          conditions: ['H1N1', 'Rotavirus', 'Meningococcal B', 'Lung Carcinoma Vaccine', 'Zika', 'Leprosy']
-        },
-        {
-          id: 'vascular',
-          title: 'Vascular Diseases',
-          icon: 'bi-diagram-3-fill',
-          pillar: 'Internal Medicine',
-          conditions: ['DVT (Deep Vein Thrombosis)', 'PE (Pulmonary Embolism)', 'Abdominal Aorta Aneurysm']
-        },
-        {
-          id: 'reproductive',
-          title: 'Reproductive Health',
-          icon: 'bi-heart-fill',
-          pillar: 'Specialties',
-          conditions: ['Contraception', 'Preeclampsia Prevention']
-        },
-        {
-          id: 'genetic',
-          title: 'Genetic',
-          icon: 'bi-dna',
-          pillar: 'Specialties',
-          conditions: ['Adrenoleukodystrophy']
-        },
-        {
-          id: 'celltherapy',
-          title: 'Cell Therapy & Transplant',
-          icon: 'bi-boxes',
-          pillar: 'Oncology & Immunology',
-          conditions: ['PTLD (Post-Transplant Lymphoproliferative Disorder)']
-        },
-        {
-          id: 'hemato',
-          title: 'Hematology',
-          icon: 'bi-droplet-fill',
-          pillar: 'Oncology & Immunology',
-          conditions: ['Von Willebrand Disease', 'Haemophilia']
-        },
-        {
-          id: 'ortho',
-          title: 'Orthopaedics',
-          icon: 'bi-bandaid-fill',
-          pillar: 'Specialties',
-          conditions: ['Spinal Fusion']
-        },
-        {
-          id: 'urology',
-          title: 'Urology',
-          icon: 'bi-gender-male',
-          pillar: 'Specialties',
-          conditions: ['Erectile Dysfunction']
-        }
-      ];
-
-      // RENDERIZADO DE LAS 21 ÁREAS TERAPÉUTICAS
-      function renderTherapeuticAreas() {
-        const grid = document.getElementById('ta-cards-grid');
-        if (!grid) return;
-        grid.innerHTML = therapeuticAreasData.map(area => `
-          <div class="col-lg-4 col-md-6 ta-card-item" data-title="${area.title.toLowerCase()}" data-conditions="${area.conditions.join(' ').toLowerCase()}">
-            <div class="ta-card p-4 h-100 d-flex flex-column justify-content-between">
-              <div>
-                <div class="d-flex align-items-center gap-3 mb-3">
-            
-                  <div>
-                    <h3 class="h5 mb-0 fw-bold text-dark">
-                      ${area.title}
-                      ${area.isNew ? '<span class="badge bg-success text-white ms-1 align-middle" style="font-size: 0.65rem;">NEW</span>' : ''}
-                      ${area.isFused ? '<span class="badge bg-cyan text-dark fw-bold ms-1 align-middle" style="font-size: 0.65rem;">FUSED</span>' : ''}
-                    </h3>
-                  </div>
-                </div>
-                <div class="d-flex flex-wrap gap-2 mb-3">
-                  ${area.conditions.map(c => `<span class="condition-badge">${c}</span>`).join('')}
-                </div>
-              </div>
-
-            </div>
-          </div>
-        `).join('');
-      }
-
-      // BUSCADOR EN TIEMPO REAL
-      function filterCards() {
-        const query = document.getElementById('ta-search-input').value.toLowerCase().trim();
-        const items = document.querySelectorAll('.ta-card-item');
-
-        items.forEach(item => {
-          const title = item.getAttribute('data-title');
-          const conditions = item.getAttribute('data-conditions');
-          if (title.includes(query) || conditions.includes(query)) {
-            item.style.display = 'block';
-          } else {
-            item.style.display = 'none';
-          }
-        });
-      }
-
-      // Inicialización al cargar la página
-      document.addEventListener('DOMContentLoaded', () => {
-        renderTherapeuticAreas();
-      });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
     <!-- Application Modules -->
     <script src="script.js"></script>
-    <script src="gsap-animations.js"></script>
     <script src="donut-chart.js"></script>
+    <script src="logo-marquee.js"></script>
+    <script src="gsap-animations.js"></script>
   </body>
 </html>

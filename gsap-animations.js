@@ -9,8 +9,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     effects: true,
   });
 
-
-
   gsap.from(".line", {
     duration: 1,
     width: "-10%",
@@ -26,10 +24,52 @@ document.addEventListener("DOMContentLoaded", (event) => {
     stagger: 0.1,
   });
 
+  gsap.from(".enter", {
+    duration: 1,
+    scale: 0.9,
+  });
+  // Registra el plugin de ScrollTrigger
+  gsap.registerPlugin(ScrollTrigger);
 
+  const imgs = gsap.utils.toArray(".insert-img");
 
-  gsap.utils.toArray(".section-description").forEach((parrafo)=>{
-    const splitP = new SplitText(parrafo, {type: "lines"});
+  // 1. Primer elemento (de derecha a izquierda)
+  if (imgs[0]) {
+    gsap.fromTo(
+      imgs[0],
+      { clipPath: "inset(0% 100% 0% 0%)" },
+      {
+        clipPath: "inset(0% 0% 0% 0%)",
+        ease: "none", // Importante: 'none' da una respuesta fluida al scrub
+        scrollTrigger: {
+          trigger: imgs[0],
+          start: "top 180%",
+          end: "top 80%",
+          scrub: true, // Conecta el progreso de la animación directamente al scroll
+        },
+      },
+    );
+  }
+
+  // 2. Segundo elemento (de izquierda a derecha)
+  if (imgs[1]) {
+    gsap.fromTo(
+      imgs[1],
+      { clipPath: "inset(0% 0% 0% 100%)" },
+      {
+        clipPath: "inset(0% 0% 0% 0%)",
+        ease: "none",
+        scrollTrigger: {
+          trigger: imgs[1],
+          start: "top 180%",
+          end: "top 60%",
+          scrub: true,
+        },
+      },
+    );
+  }
+  gsap.utils.toArray(".section-description").forEach((parrafo) => {
+    const splitP = new SplitText(parrafo, { type: "lines" });
 
     gsap.from(splitP.lines, {
       duration: 0.4,
@@ -43,9 +83,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         toggleActions: "play none none reverse",
       },
     });
-
-
-  })
+  });
 
   gsap.utils.toArray("h2").forEach((texto) => {
     const miSplit = new SplitText(texto, { type: "words" });
@@ -60,26 +98,25 @@ document.addEventListener("DOMContentLoaded", (event) => {
         start: "top 85%",
         end: "bottom 60%",
         toggleActions: "play none none reverse",
-
       },
     });
   });
 
-  const statCols = document.querySelectorAll('.stats-display > div');
+  const statCols = document.querySelectorAll(".stats-display > div");
 
   // 1. Animación de entrada con Stagger para las columnas
   gsap.from(statCols, {
     opacity: 0,
-    delay:0.4,
+    delay: 0.4,
     y: 30,
     duration: 0.4,
     stagger: 0.2,
-    ease: "power2.out"
+    ease: "power2.out",
   });
 
   // 2. Animación de conteo adaptativa (soporta números, rangos 60-70%, sufijos 650M+ y texto FDA NAI / 1/3)
   statCols.forEach((col, index) => {
-    const span = col.querySelector('span');
+    const span = col.querySelector("span");
     if (!span) return;
 
     const originalText = span.textContent.trim();
@@ -89,7 +126,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     if (rangeMatch) {
       const minVal = parseInt(rangeMatch[1], 10);
       const maxVal = parseInt(rangeMatch[2], 10);
-      const suffix = rangeMatch[3] || '';
+      const suffix = rangeMatch[3] || "";
       const counter = { min: 0, max: 0 };
 
       gsap.to(counter, {
@@ -99,12 +136,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
         delay: index * 0.2,
         ease: "power2.out",
         onUpdate: () => {
-          span.textContent = Math.floor(counter.min) + '-' + Math.floor(counter.max) + suffix + ' ';
-        }
+          span.textContent =
+            Math.floor(counter.min) +
+            "-" +
+            Math.floor(counter.max) +
+            suffix +
+            " ";
+        },
       });
     } else if (numMatch) {
       const targetValue = parseInt(numMatch[1], 10);
-      const suffix = numMatch[2] || '';
+      const suffix = numMatch[2] || "";
       const counter = { val: 0 };
 
       gsap.to(counter, {
@@ -113,32 +155,32 @@ document.addEventListener("DOMContentLoaded", (event) => {
         delay: index * 0.2,
         ease: "power2.out",
         onUpdate: () => {
-          span.textContent = Math.floor(counter.val) + suffix + ' ';
-        }
+          span.textContent = Math.floor(counter.val) + suffix + " ";
+        },
       });
     } else {
       // Texto no numérico o fracciones (ej. "FDA NAI", "1/3"): mantener texto original e intácto con entrada suave
-      span.textContent = originalText + ' ';
+      span.textContent = originalText + " ";
       gsap.from(span, {
         opacity: 0,
         y: 10,
         duration: 1,
         delay: index * 0.2,
-        ease: "power2.out"
+        ease: "power2.out",
       });
     }
   });
 
   if (document.querySelector(".panel")) {
-    gsap.from(".panel",{
-      scale:0.9,
-      x:130,
+    gsap.from(".panel", {
+      scale: 0.9,
+      x: 130,
       scrollTrigger: {
         trigger: ".panel",
         start: "top 95%",
         end: "bottom 90%",
         toggleActions: "play none none reverse",
-        scrub:"true"
+        scrub: "true",
       },
     });
   }
@@ -152,7 +194,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         start: "top 95%",
         end: "bottom 90%",
         toggleActions: "play none none reverse",
-        scrub: "true"
+        scrub: "true",
       },
     });
   }

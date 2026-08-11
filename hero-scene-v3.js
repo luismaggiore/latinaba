@@ -22,7 +22,7 @@ if (container) {
     38,
     window.innerWidth / window.innerHeight,
     0.1,
-    220
+    220,
   );
   camera.position.set(0, 0, 32);
   camera.lookAt(0, 0, 0);
@@ -66,12 +66,16 @@ if (container) {
 
     const ctx = canvas.getContext("2d");
     const grad = ctx.createRadialGradient(
-      width * 0.5, height * 0.4, 50,
-      width * 0.5, height * 0.5, width * 0.9
+      width * 0.5,
+      height * 0.4,
+      50,
+      width * 0.5,
+      height * 0.5,
+      width * 0.9,
     );
-    grad.addColorStop(0, "#ffffff");
-    grad.addColorStop(0.35, "#e0f2fe");
-    grad.addColorStop(1, "#bae6fd");
+    grad.addColorStop(0, "#dcecff");
+    grad.addColorStop(0.5, "#c9f0fc");
+    grad.addColorStop(1, "#59a4ff");
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, width, height);
 
@@ -147,7 +151,9 @@ if (container) {
 
   // --- Carga del Modelo GLTF/GLB (cell.glb) ---
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("https://unpkg.com/three@0.160.0/examples/jsm/libs/draco/gltf/");
+  dracoLoader.setDecoderPath(
+    "https://unpkg.com/three@0.160.0/examples/jsm/libs/draco/gltf/",
+  );
 
   const gltfLoader = new GLTFLoader();
   gltfLoader.setDRACOLoader(dracoLoader);
@@ -175,7 +181,9 @@ if (container) {
           child.castShadow = true;
           child.receiveShadow = true;
 
-          const materials = Array.isArray(child.material) ? child.material : [child.material];
+          const materials = Array.isArray(child.material)
+            ? child.material
+            : [child.material];
           materials.forEach((mat) => {
             mat.side = THREE.DoubleSide;
 
@@ -187,7 +195,7 @@ if (container) {
               let newHue = (hsl.h + 0.45) % 1.0;
               // Si el nuevo hue está fuera del rango celeste/turquesa, mapear suavemente a celeste (0.54 = ~194 deg)
               if (newHue < 0.48 || newHue > 0.62) {
-                newHue = 0.53 + (hsl.h * 0.08);
+                newHue = 0.53 + hsl.h * 0.08;
               }
               mat.color.setHSL(newHue, Math.min(hsl.s * 1.1, 0.85), hsl.l);
             }
@@ -204,25 +212,25 @@ if (container) {
           speedX: 0.0009,
           speedY: 0.0013,
           speedZ: 0.0005,
-          floatPhase: 0
+          floatPhase: 0,
         },
         // 2. Célula Superior Izquierda (Z = +0.5)
         {
           pos: new THREE.Vector3(-7.2, 4.8, 0.5),
           scaleMultiplier: 1.05,
-          speedX: -0.0010,
+          speedX: -0.001,
           speedY: 0.0015,
           speedZ: 0.0006,
-          floatPhase: 1.2
+          floatPhase: 1.2,
         },
         // 3. Célula Inferior Derecha (Z = -3.5)
         {
           pos: new THREE.Vector3(8.0, -4.8, -3.5),
           scaleMultiplier: 0.95,
           speedX: 0.0011,
-          speedY: -0.0010,
+          speedY: -0.001,
           speedZ: -0.0005,
-          floatPhase: 2.4
+          floatPhase: 2.4,
         },
         // 4. Célula Inferior Izquierda (Z = -6.0)
         {
@@ -231,7 +239,7 @@ if (container) {
           speedX: -0.0008,
           speedY: 0.0014,
           speedZ: 0.0007,
-          floatPhase: 3.6
+          floatPhase: 3.6,
         },
         // 5. Célula Superior Centro/Derecha Fondo (Z = -9.5)
         {
@@ -240,17 +248,17 @@ if (container) {
           speedX: 0.0006,
           speedY: 0.0016,
           speedZ: -0.0006,
-          floatPhase: 4.8
+          floatPhase: 4.8,
         },
         // 6. Célula Centro Fondo Profundo (Z = -12.0)
         {
           pos: new THREE.Vector3(-3.0, -1.8, -12.0),
-          scaleMultiplier: 0.70,
+          scaleMultiplier: 0.7,
           speedX: -0.0009,
           speedY: 0.0011,
           speedZ: 0.0004,
-          floatPhase: 5.5
-        }
+          floatPhase: 5.5,
+        },
       ];
 
       // Instanciar las 6 células
@@ -287,7 +295,7 @@ if (container) {
           speedZ: cfg.speedZ,
           floatPhase: cfg.floatPhase,
           mouseRotX: 0,
-          mouseRotY: 0
+          mouseRotY: 0,
         });
       });
 
@@ -309,7 +317,7 @@ if (container) {
     (error) => {
       console.error("Error cargando cell.glb:", error);
       loadingOverlay.innerHTML = `<span style="color: #ef4444;">Error cargando modelo 3D</span>`;
-    }
+    },
   );
 
   // --- Control de Interacción de Cursor Dinámico para Células ---
@@ -371,7 +379,7 @@ if (container) {
 
       // 2. Flotación oscilante básica
       const floatY = Math.sin(elapsedTime * 0.25 + c.floatPhase) * 0.18;
-      const floatX = Math.cos(elapsedTime * 0.20 + c.floatPhase) * 0.10;
+      const floatX = Math.cos(elapsedTime * 0.2 + c.floatPhase) * 0.1;
 
       // 3. Reacción interactiva al cursor
       const worldCellPos = c.basePos.clone().add(cellGroup.position);
@@ -385,7 +393,7 @@ if (container) {
       let targetScaleBoost = 1.0;
 
       if (distToMouse < interactRadius) {
-        const factor = 1.0 - (distToMouse / interactRadius);
+        const factor = 1.0 - distToMouse / interactRadius;
         const smoothFactor = Math.pow(factor, 2);
 
         const dirX = worldCellPos.x - mouseWorld.x;
@@ -394,8 +402,8 @@ if (container) {
         targetPushX = (dirX > 0 ? 1 : -1) * smoothFactor * 1.8;
         targetPushY = (dirY > 0 ? 1 : -1) * smoothFactor * 1.8;
 
-        targetTiltY = (mouseNDC.x) * smoothFactor * 0.8;
-        targetTiltX = (-mouseNDC.y) * smoothFactor * 0.8;
+        targetTiltY = mouseNDC.x * smoothFactor * 0.8;
+        targetTiltX = -mouseNDC.y * smoothFactor * 0.8;
 
         targetScaleBoost = 1.0 + smoothFactor * 0.14;
       }
@@ -405,12 +413,13 @@ if (container) {
       c.targetOffset.y += (targetPushY - c.targetOffset.y) * 0.05;
       c.mouseRotX += (targetTiltX - c.mouseRotX) * 0.05;
       c.mouseRotY += (targetTiltY - c.mouseRotY) * 0.05;
-      c.currentScale += ((c.baseScale * targetScaleBoost) - c.currentScale) * 0.05;
+      c.currentScale +=
+        (c.baseScale * targetScaleBoost - c.currentScale) * 0.05;
 
       c.pivot.position.set(
         c.basePos.x + floatX + c.targetOffset.x,
         c.basePos.y + floatY + c.targetOffset.y,
-        c.basePos.z
+        c.basePos.z,
       );
 
       c.pivot.rotation.x = c.mouseRotX;
@@ -420,8 +429,10 @@ if (container) {
 
     // Desplazamiento en Scroll
     const scrollFactor = Math.min(scrollY / 1000, 1);
-    cellGroup.position.y = (window.innerWidth > 992 ? 0 : -0.5) - scrollFactor * 1.5;
-    cellGroup.rotation.z = Math.sin(elapsedTime * 0.15) * 0.03 + scrollFactor * 0.08;
+    cellGroup.position.y =
+      (window.innerWidth > 992 ? 0 : -0.5) - scrollFactor * 1.5;
+    cellGroup.rotation.z =
+      Math.sin(elapsedTime * 0.15) * 0.03 + scrollFactor * 0.08;
 
     // Renderizado con Post-processing
     composer.render();

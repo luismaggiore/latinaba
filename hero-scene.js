@@ -74,8 +74,11 @@ if (container) {
 
   function updateBackground() {
     const aspect = window.innerWidth / window.innerHeight;
+    // innerHeight can momentarily be 0 during tab creation/resize, which
+    // turns aspect into Infinity/NaN and crashes createLinearGradient.
+    const safeAspect = Number.isFinite(aspect) && aspect > 0 ? aspect : 1;
     const old = scene.background;
-    scene.background = buildBackgroundTexture(aspect);
+    scene.background = buildBackgroundTexture(safeAspect);
     if (old) old.dispose();
   }
   updateBackground();

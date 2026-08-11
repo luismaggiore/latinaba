@@ -19,7 +19,7 @@ if (container) {
     40,
     window.innerWidth / window.innerHeight,
     0.1,
-    120
+    120,
   );
   camera.position.set(0, 3, 30);
   camera.lookAt(0, 3, 0);
@@ -42,7 +42,7 @@ if (container) {
   const bokehPass = new BokehPass(scene, camera, {
     focus: 30.0,
     aperture: 0.0006,
-    maxblur: 0.00, // Desenfoque más contenido y afilado
+    maxblur: 0.0, // Desenfoque más contenido y afilado
     width: window.innerWidth,
     height: window.innerHeight,
   });
@@ -61,9 +61,9 @@ if (container) {
 
     const ctx = canvas.getContext("2d");
     const grad = ctx.createLinearGradient(0, 0, width, height);
-    grad.addColorStop(0, "#e2e8f0");
-    grad.addColorStop(0.5, "#f8fafc");
-    grad.addColorStop(1, "#e2e8f0");
+    grad.addColorStop(0, "#dcecff");
+    grad.addColorStop(0.5, "#c9f0fc");
+    grad.addColorStop(1, "#59a4ff");
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, width, height);
 
@@ -114,27 +114,32 @@ if (container) {
     const MAX_ATTEMPTS = 75;
 
     // Bounds contenidos perfectamente dentro del encuadre de la cámara
-    const xStart = -26.0, xEnd = 28.0;
-    const zStart = -6.0, zEnd = 5.0;
+    const xStart = -26.0,
+      xEnd = 28.0;
+    const zStart = -6.0,
+      zEnd = 5.0;
 
     let best = null;
     let bestScore = -Infinity;
 
     for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
       const tProgress = THREE.MathUtils.clamp(
-        (index / (NODE_COUNT - 1)) + THREE.MathUtils.randFloatSpread(0.20),
+        index / (NODE_COUNT - 1) + THREE.MathUtils.randFloatSpread(0.2),
         0.0,
-        1.0
+        1.0,
       );
 
       const baseX = THREE.MathUtils.lerp(xStart, xEnd, tProgress);
 
       // Arco semicircular elegante perfectamente encuadrado
-      const semiCircleArc = Math.sin(Math.pow(tProgress, 0.65) * Math.PI) * 13.5;
+      const semiCircleArc =
+        Math.sin(Math.pow(tProgress, 0.65) * Math.PI) * 13.5;
       const linearY = THREE.MathUtils.lerp(8.0, -10.0, tProgress);
       const baseY = linearY + semiCircleArc;
 
-      const baseZ = THREE.MathUtils.lerp(zStart, zEnd, tProgress) + Math.cos(tProgress * Math.PI) * 4.0;
+      const baseZ =
+        THREE.MathUtils.lerp(zStart, zEnd, tProgress) +
+        Math.cos(tProgress * Math.PI) * 4.0;
 
       // Dispersión 3D contenida dentro de la toma
       const x = baseX + THREE.MathUtils.randFloatSpread(1.0);
@@ -300,13 +305,13 @@ if (container) {
         attribute float aT;
         attribute float aEdgePhase;
         varying float vT;
-        varying float vEdgePhase;`
+        varying float vEdgePhase;`,
       )
       .replace(
         "#include <begin_vertex>",
         `#include <begin_vertex>
         vT = aT;
-        vEdgePhase = aEdgePhase;`
+        vEdgePhase = aEdgePhase;`,
       );
 
     shader.fragmentShader = shader.fragmentShader
@@ -318,7 +323,7 @@ if (container) {
         uniform float uPulseSpeed;
         uniform float uPulseWidth;
         varying float vT;
-        varying float vEdgePhase;`
+        varying float vEdgePhase;`,
       )
       .replace(
         "#include <emissivemap_fragment>",
@@ -346,7 +351,7 @@ if (container) {
         vec3 activeEmissive = (uPulseColor * totalPulse * 1.15) + 
                              (vec3(0.5, 0.8, 1.0) * junctionGlow * (totalPulse * 0.2 + 0.08));
 
-        totalEmissiveRadiance += activeEmissive;`
+        totalEmissiveRadiance += activeEmissive;`,
       );
   };
 
@@ -364,7 +369,7 @@ if (container) {
       TUBULAR_SEGMENTS,
       AXON_RADIUS,
       RADIAL_SEGMENTS,
-      false
+      false,
     );
 
     const uvAttr = tubeGeo.attributes.uv;
@@ -377,7 +382,10 @@ if (container) {
 
     const edgePhase = Math.random();
     const aEdgePhase = new Float32Array(vertCount).fill(edgePhase);
-    tubeGeo.setAttribute("aEdgePhase", new THREE.BufferAttribute(aEdgePhase, 1));
+    tubeGeo.setAttribute(
+      "aEdgePhase",
+      new THREE.BufferAttribute(aEdgePhase, 1),
+    );
 
     const mesh = new THREE.Mesh(tubeGeo, axonMaterial);
     group.add(mesh);
@@ -455,7 +463,7 @@ if (container) {
     () => {
       targetScrollY = window.scrollY || document.documentElement.scrollTop;
     },
-    { passive: true }
+    { passive: true },
   );
 
   function updatePointer(clientX, clientY) {
@@ -465,7 +473,7 @@ if (container) {
   }
 
   window.addEventListener("pointermove", (e) =>
-    updatePointer(e.clientX, e.clientY)
+    updatePointer(e.clientX, e.clientY),
   );
   window.addEventListener(
     "touchmove",
@@ -474,7 +482,7 @@ if (container) {
         updatePointer(e.touches[0].clientX, e.touches[0].clientY);
       }
     },
-    { passive: true }
+    { passive: true },
   );
 
   function updateCameraAspect() {
@@ -503,7 +511,7 @@ if (container) {
   window.addEventListener("resize", () => {
     updateCameraAspect();
     renderer.setPixelRatio(
-      Math.min(window.devicePixelRatio, window.innerWidth < 768 ? 1.5 : 2)
+      Math.min(window.devicePixelRatio, window.innerWidth < 768 ? 1.5 : 2),
     );
     renderer.setSize(window.innerWidth, window.innerHeight);
     composer.setSize(window.innerWidth, window.innerHeight);

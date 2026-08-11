@@ -13,13 +13,13 @@ const container = document.getElementById("stage");
 if (container) {
   // --- Escena base ---
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0xf8fafc, 0.015);
+  scene.fog = new THREE.FogExp2(0x9ee1e8, 0.02);
 
   const camera = new THREE.PerspectiveCamera(
     28,
     window.innerWidth / window.innerHeight,
     0.1,
-    120
+    120,
   );
   camera.position.set(0, 3, 30);
   camera.lookAt(0, 3, 0);
@@ -61,9 +61,10 @@ if (container) {
 
     const ctx = canvas.getContext("2d");
     const grad = ctx.createLinearGradient(0, 0, width, height);
-    grad.addColorStop(0, "#e5eaf0");
-    grad.addColorStop(0.5, "#f7f7f7");
-    grad.addColorStop(1, "#e5eaf0");
+    grad.addColorStop(0, "#558cdf");
+    grad.addColorStop(0.25, "#aee6f7");
+    grad.addColorStop(0.5, "#f6fdff");
+    grad.addColorStop(1, "#c8f2f5");
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, width, height);
 
@@ -94,11 +95,15 @@ if (container) {
   const group = new THREE.Group();
   scene.add(group);
 
-  // GRUPO DE LA HÉLICE DE ADN
+  // Contenedor para aplicar la posición e inclinación estática del ADN
+  const dnaHelixContainer = new THREE.Group();
+  dnaHelixContainer.position.set(-4, 0, 0);
+  dnaHelixContainer.rotation.z = -0.65; // Inclinación de la hélice
+  group.add(dnaHelixContainer);
+
+  // GRUPO DE LA HÉLICE DE ADN (para el giro sobre su propio eje)
   const dnaHelixGroup = new THREE.Group();
-  dnaHelixGroup.position.set(3, 0, 0);
-  dnaHelixGroup.rotation.z = -0.15;
-  group.add(dnaHelixGroup);
+  dnaHelixContainer.add(dnaHelixGroup);
 
   // ==========================================
   // OPCIÓN 2: ADN MOLÉCULAS
@@ -109,10 +114,7 @@ if (container) {
   const Y_MAX = 24.0;
   const TURNS = 2.8;
 
-  const RUNG_PALETTES = [
-    [0xffffff, 0xefefef],
-
-  ];
+  const RUNG_PALETTES = [[0xffffff, 0xffffff]];
 
   const dnaSpheres = [];
 
@@ -244,7 +246,7 @@ if (container) {
     const coreMesh = new THREE.InstancedMesh(
       coreGeometry,
       coreMat,
-      indices.length
+      indices.length,
     );
 
     dnaHelixGroup.add(mesh);
@@ -274,7 +276,7 @@ if (container) {
     () => {
       targetScrollY = window.scrollY || document.documentElement.scrollTop;
     },
-    { passive: true }
+    { passive: true },
   );
 
   function updatePointer(clientX, clientY) {
@@ -284,7 +286,7 @@ if (container) {
   }
 
   window.addEventListener("pointermove", (e) =>
-    updatePointer(e.clientX, e.clientY)
+    updatePointer(e.clientX, e.clientY),
   );
   window.addEventListener(
     "touchmove",
@@ -293,7 +295,7 @@ if (container) {
         updatePointer(e.touches[0].clientX, e.touches[0].clientY);
       }
     },
-    { passive: true }
+    { passive: true },
   );
 
   function updateCameraAspect() {
@@ -321,7 +323,7 @@ if (container) {
   window.addEventListener("resize", () => {
     updateCameraAspect();
     renderer.setPixelRatio(
-      Math.min(window.devicePixelRatio, window.innerWidth < 768 ? 1.5 : 2)
+      Math.min(window.devicePixelRatio, window.innerWidth < 768 ? 1.5 : 2),
     );
     renderer.setSize(window.innerWidth, window.innerHeight);
     composer.setSize(window.innerWidth, window.innerHeight);

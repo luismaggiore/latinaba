@@ -66,6 +66,11 @@ function initDonutChart() {
   const radius = 200;
   const innerRadius = 110;
 
+  // Clear out any previously rendered chart/legend before re-drawing, so
+  // calling this more than once never stacks duplicate SVGs or legend items.
+  d3.select('#donut-chart').selectAll('*').remove();
+  d3.select('#donut-legend').selectAll('*').remove();
+
   const svg = d3.select('#donut-chart').append('svg')
     .attr('viewBox', `0 0 ${width} ${height}`)
     .attr('width', '100%')

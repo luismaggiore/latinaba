@@ -1,0 +1,44 @@
+#stage {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  filter: saturate(1.5);
+}
+
+#smooth-wrapper {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+#smooth-content {
+  position: relative;
+  width: 100%;
+  z-index: 2;
+}
+
+/* Swup Transition Animations */
+.transition-fade {
+  transition: opacity 0.35s ease-in-out, transform 0.35s ease-in-out;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+html.is-animating .transition-fade {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+html.is-leaving .transition-fade {
+  opacity: 0;
+  transform: translateY(-12px);
+}
+
+/* Sub-page Hero Label Badge */
+.hero-label-badge {
+  display: inline-block;
+  margin-bottom: clamp(10px, 4vh, 4vw);
+}

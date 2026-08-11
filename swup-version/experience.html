@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Therapeutic Area Experience in Clinical Trials | LatinaBA (Swup Version)</title>
+    <meta
+      name="description"
+      content="34+ therapeutic areas across Latin America — explore LatinaBA's clinical trial experience by phase and indication, from oncology to rare disease."
+    />
+
+    <!-- Google Fonts & Bootstrap CSS -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="swup.css" />
+
+    <!-- D3 & TopoJSON (needed by both the donut chart and the LATAM map — the
+         latter is loaded on every page so it works if you swup-navigate to
+         the homepage from here) -->
+    <script src="https://unpkg.com/d3@7/dist/d3.min.js"></script>
+    <script src="https://unpkg.com/topojson-client@3/dist/topojson-client.min.js"></script>
+  </head>
+  <body>
+    <!-- Persistent Canvas Background (DNA Helix Scene V2) -->
+    <div id="stage"></div>
+
+    <!-- Header Navigation -->
+    <nav
+      class="navbar navbar-expand-lg navbar-light fixed-top bg-transparent container-fluid justify-content-end py-2"
+      style="z-index: 1060"
+    >
+      <div class="row">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="leadership.html">Leadership Team</a></li>
+            <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+            <li class="nav-item"><a class="nav-link active" aria-current="page" href="experience.html">Experience</a></li>
+            <li class="nav-item"><a class="nav-link" href="why-latam.html">Why Latam</a></li>
+            <li class="nav-item"><a class="nav-link" href="resources.html">Resources</a></li>
+            <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ScrollSmoother Outer Wrappers -->
+    <div id="smooth-wrapper">
+      <div id="smooth-content">
+        <!-- Swup Transition Main Container -->
+        <main id="swup" class="transition-fade">
+
+          <!-- Hero Content Section -->
+          <header class="hero-content bg-ltn">
+            <div class="fog-overlay"></div>
+            <div class="enter z-2">
+              <div class="container-fluid py-3 z-2">
+                <div class="row align-items-end mb-custom">
+                  <div class="col-lg">
+                    <!-- Page Name Label instead of Logo -->
+                    <span class="label-section hero-label-badge">Experience</span>
+                    <h1 class="hero-text">
+                      Therapeutic area experience in
+                      <span class="highlight">clinical trials</span>
+                    </h1>
+                  </div>
+                  <div class="col-lg-4 mb-3">
+                    <p class="hero-p">
+                      For more than 17 years, LatinaBA has partnered with pharmaceutical, biotech, and medical device companies as experts in the region, conducting all phases of clinical trials across 135+ completed projects and 34+ therapeutic areas in Latin America.
+                    </p>
+                    <div class="line d-none d-lg-block mb-4"></div>
+                    <a class="btn btn-latinaba" href="leadership.html"> Meet our Experts </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Stats Display -->
+              <div class="container-fluid z-2 pb-3">
+                <div class="line mb-custom"></div>
+                <div class="row gx-0 justify-content-between pb-hero stats-display">
+                  <div class="col-lg-auto col-6">
+                    <p><span>17 </span> Years of experience</p>
+                  </div>
+                  <div class="col-lg-auto col-6">
+                    <p><span>135+ </span> Completed projects</p>
+                  </div>
+                  <div class="col-lg-auto col-6">
+                    <p><span>95 </span> Different sponsors</p>
+                  </div>
+                  <div class="col-lg-auto col-6">
+                    <p><span>16 </span> Countries</p>
+                  </div>
+                  <div class="col-lg-auto col-12" style="border-right: none">
+                    <p><span>34+ </span> Therapeutic areas</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <!-- Donut Chart Section (Projects by Phase & Indication) -->
+          <section class="bg-ltn py-4 z-2">
+            <div class="container-fluid">
+              <div class="row align-items-center">
+                <div class="col-lg-7 mb-4 mb-lg-0 panel-2 d-flex justify-content-center px-0">
+                  <div id="wrapper" class="px-0">
+                    <div id="donut-chart" class="px-0"></div>
+                    <div id="donut-legend"></div>
+                    <div id="donut-tooltip"></div>
+                  </div>
+                </div>
+                <div class="col-lg-5">
+                  <h2 class="mb-custom">
+                    We have extensive experience in all phases of
+                    <strong>Clinical Research</strong>
+                  </h2>
+                  <p class="mb-4">
+                    Our clinical operations portfolio spans Phase I (First-In-Man), Phase II, Phase III, Phase IV, Observational (Obs) studies, and Medical Device research conducted to strict international ICH-GCP standards.
+                  </p>
+                  <ul class="presence">
+                    <li><strong>Phase III:</strong> Pivotal international trials with broad patient reach</li>
+                    <li><strong>Phase IV:</strong> Post-marketing surveillance and real-world evidence</li>
+                    <li><strong>Observational (Obs):</strong> Registry studies and epidemiologic data</li>
+                    <li><strong>Phase II:</strong> Early proof-of-concept and safety evaluations</li>
+                    <li><strong>FIM / Device:</strong> First-In-Man and Class III Medical Device trials</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Therapeutic Area Experience Section -->
+          <section class="py-5 bg-ltn z-2">
+            <div class="container-fluid">
+              <div class="row mb-5 align-items-end justify-content-between">
+                <div class="col-lg-7 mb-3 mb-lg-0">
+                  <span class="label-section"> Therapeutic Areas</span>
+                  <h2 class="mb-custom">
+                    Therapeutic area experience in <span class="highlight">clinical trials</span>
+                  </h2>
+                  <p class="section-description mb-0">
+                    Our clinical trial experience spans 18 therapeutic categories across Latin America, covering Phase I to IV studies with drugs & medical devices.
+                  </p>
+                </div>
+                <div class="col-lg-4">
+                  <div class="position-relative">
+                    <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-cyan fs-5"></i>
+                    <input type="text" id="ta-search-input" onkeyup="filterCards()" class="form-control search-box-custom ps-5" placeholder="Search therapeutic area or condition..." />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Cards are rendered entirely by window.renderTherapeuticAreas()
+                   in script.js from window.therapeuticAreasData — that is the
+                   single source of truth. Nothing is hardcoded here so the
+                   grid can never drift out of sync with the data. -->
+              <div class="row gx-2 gy-2" id="ta-cards-grid"></div>
+            </div>
+          </section>
+
+          <!-- Client Portfolio (Logos by Category): logos are placeholder
+               tiles for now. Category buttons reflect whichever category is
+               centered in the marquee as it scrolls, and clicking one jumps
+               the marquee to where that category starts. Counts come from
+               the client list spreadsheet (Type of Client column). Rendering
+               and behavior live in ../logo-marquee.js, re-initialized on
+               every swup navigation by swup-app.js. -->
+          <section class="py-5 bg-ltn z-2">
+            <div class="container-fluid">
+              <div class="row mb-4">
+                <div class="col-lg-8">
+                  <span class="label-section">Client Portfolio</span>
+                  <h2 class="mb-0">
+                    Trusted by CROs, pharma, biotech, and medical device sponsors
+                  </h2>
+                </div>
+              </div>
+
+              <div class="nav-tabs-custom mb-4" id="logo-category-selector">
+                <button class="tab-btn-custom active" type="button" data-cat="cro">CRO <span class="indication-badge ms-1">34</span></button>
+                <button class="tab-btn-custom" type="button" data-cat="pharma">Pharma <span class="indication-badge ms-1">22</span></button>
+                <button class="tab-btn-custom" type="button" data-cat="biotech">Biotech <span class="indication-badge ms-1">5</span></button>
+                <button class="tab-btn-custom" type="button" data-cat="device">Medical Device <span class="indication-badge ms-1">5</span></button>
+                <button class="tab-btn-custom" type="button" data-cat="academic">Academic / NGO / Gov. <span class="indication-badge ms-1">5</span></button>
+              </div>
+
+              <div class="logo-marquee" id="logo-marquee">
+                <div class="logo-marquee-track" id="logo-marquee-track">
+                  <div class="logo-marquee-labels" id="logo-marquee-labels"></div>
+                  <div class="logo-marquee-tiles" id="logo-marquee-tiles"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Explore Section -->
+          <section class="bg-ltn">
+            <div class="container-fluid">
+              <div class="row gx-custom gy-2">
+                <div class="col-lg">
+                  <div class="explore-div">
+                    <span class="label-section">Explore</span>
+                    <a class="explore" href="why-latam.html">
+                      <h2 class="pt-5 pb-3">Why our clients select us</h2>
+                    </a>
+                  </div>
+                </div>
+                <div class="col-lg">
+                  <div class="explore-div">
+                    <span class="label-section">Explore</span>
+                    <a class="explore" href="services.html">
+                      <h2 class="pt-5 pb-3">Clinical research services</h2>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Footer -->
+          <footer>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                  <div class="mb-3">
+                    <a class="navbar-brand" href="index.html">
+                      <img src="../logo-new.svg" alt="LatinaBA Logo" />
+                    </a>
+                    <p class="mt-5">Leading Clinical Research Solutions</p>
+                  </div>
+                </div>
+
+                <div class="col-md-4 mb-4 mb-md-0">
+                  <h6 class="fw-bold mb-3">Quick Links</h6>
+                  <ul class="list-unstyled">
+                    <li><a href="why-latam.html" class="text-decoration-none">Why LATAM</a></li>
+                    <li><a href="services.html" class="text-decoration-none">Services</a></li>
+                    <li><a href="experience.html" class="text-decoration-none">Experience</a></li>
+                    <li><a href="leadership.html" class="text-decoration-none">Leadership Team</a></li>
+                    <li><a href="resources.html" class="text-decoration-none">Resources</a></li>
+                    <li><a href="contact.html" class="text-decoration-none">Contact</a></li>
+                  </ul>
+                </div>
+
+                <div class="col-md-4">
+                  <h6 class="fw-bold mb-3">Contact Info</h6>
+                  <p class="mb-2"><strong>Email:</strong> info@latinaba.com</p>
+                  <p class="mb-2"><strong>Phone:</strong> +1 (555) 123-4567</p>
+                  <p><strong>Address:</strong> 123 Clinical Research Ave, Medical City</p>
+                </div>
+              </div>
+
+              <hr class="my-4" style="border-color: rgba(15, 23, 42, 0.15);" />
+
+              <div class="row">
+                <div class="col-12 text-center">
+                  <p class="small mb-0">&copy; 2024 Latin ABA. All rights reserved.</p>
+                </div>
+              </div>
+            </div>
+          </footer>
+
+        </main>
+      </div>
+    </div>
+
+    <!-- GSAP Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollSmoother.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollToPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/SplitText.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+    <!-- Application Modules -->
+    <script src="../script.js"></script>
+    <script src="../latam-map.js"></script>
+    <script src="../donut-chart.js"></script>
+    <script src="../logo-marquee.js"></script>
+
+    <!-- Swup.js & GSAP Engine -->
+    <script src="https://unpkg.com/swup@4"></script>
+    <script src="swup-app.js"></script>
+
+    <!-- Three.js Persistent Background Scene (DNA Helix V2) -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script type="module" src="../hero-scene-v2.js"></script>
+  </body>
+</html>

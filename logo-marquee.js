@@ -1,14 +1,13 @@
 // Client Portfolio (Logos by Category): builds one category-ordered
-// sequence of placeholder tiles, duplicates it for a seamless loop, and
-// auto-scrolls it via translateX. A label row scrolls in lockstep above the
-// tiles, one caption anchored at the exact x where each category begins.
-// The category selector reflects whichever category sits at the center of
-// the marquee on every frame, and clicking a selector tweens the marquee so
-// that category's start lands centered too (narrower categories are
-// shorter than half the viewport, so landing them at the left edge instead
-// would put the center-detector into the next category right after the
-// jump). Swap renderLogoTile() for a real <img> once logos are ready,
-// everything else keeps working as-is.
+// sequence of real client logos (logos/webp/<category>/*.webp), duplicates
+// it for a seamless loop, and auto-scrolls it via translateX. A label row
+// scrolls in lockstep above the tiles, one caption anchored at the exact x
+// where each category begins. The category selector reflects whichever
+// category sits at the center of the marquee on every frame, and clicking a
+// selector tweens the marquee so that category's start lands centered too
+// (narrower categories are shorter than half the viewport, so landing them
+// at the left edge instead would put the center-detector into the next
+// category right after the jump).
 
 // Tracks the currently running rAF loop across repeated swup page visits,
 // so re-entering the experience page never stacks up multiple loops.
@@ -20,13 +19,88 @@ function initLogoMarquee() {
     stopLogoMarquee = null;
   }
 
+  // Every entry below has a real file in logos/webp/<key>/. Client-list
+  // rows without a matching logo file (e.g. NXTHERA's sibling VERVE, or
+  // KOWA RESEARCH INSTITUTE alongside plain KOWA) are intentionally left
+  // out rather than shown as a placeholder.
   var categories = [
-    { key: 'cro', label: 'CRO', count: 34 },
-    { key: 'pharma', label: 'Pharma', count: 22 },
-    { key: 'biotech', label: 'Biotech', count: 5 },
-    { key: 'device', label: 'Medical Device', count: 5 },
-    { key: 'academic', label: 'Academic / NGO / Gov.', count: 5 }
+    {
+      key: 'cro', label: 'CRO', logos: [
+        ['advanced.webp', 'Advanced Clinical'],
+        ['aptiv.webp', 'Aptiv'],
+        ['barnettt.webp', 'Barnett International'],
+        ['biomapas.webp', 'Biomapas'],
+        ['buenosairesskin.webp', 'Buenos Aires Skin'],
+        ['caidya.webp', 'Caidya'],
+        ['confidence.webp', 'Confidence Pharmaceutical Research'],
+        ['cssi.webp', 'CSSi Life Sciences'],
+        ['ergomed.webp', 'Ergomed'],
+        ['ethicacro.webp', 'Ethica Clinical Research'],
+        ['fhiclinical.webp', 'FHI Clinical'],
+        ['gcp-service.webp', 'GCP Service'],
+        ['georgeclinical.webp', 'George Clinical'],
+        ['medtrials.webp', 'MedTrials'],
+        ['namsa.webp', 'NAMSA'],
+        ['nordicbioscience.webp', 'Nordic Bioscience'],
+        ['ora.webp', 'ORA'],
+        ['qed.webp', 'QED Pharmaceutical Services'],
+        ['qmed.webp', 'Qmed'],
+        ['rti.webp', 'RTI'],
+        ['trialrunners.webp', 'Trial Runners'],
+        ['unensayoparami.webp', 'DAMIC SRL'],
+        ['worldwideclinical.webp', 'Worldwide Clinical Trials']
+      ]
+    },
+    {
+      key: 'pharma', label: 'Pharma', logos: [
+        ['abscience.webp', 'AB Science'],
+        ['ascend.webp', 'Ascend Therapeutics'],
+        ['avadel.webp', 'Avadel'],
+        ['besins-healthcare.webp', 'Besins Healthcare'],
+        ['bridgebio.webp', 'BridgeBio'],
+        ['grunenthal.webp', 'Grunenthal'],
+        ['hdtbio.webp', 'HDT Bio'],
+        ['intercept.webp', 'Intercept Pharmaceuticals'],
+        ['kowa.webp', 'Kowa'],
+        ['larocheposay.webp', 'La Roche-Posay'],
+        ['norgreen.webp', 'Norgreen'],
+        ['octapharma.webp', 'Octapharma'],
+        ['oncotelic.webp', 'Oncotelic'],
+        ['pantheryx.webp', 'PanTheryx'],
+        ['raffo.webp', 'Laboratorios Raffo'],
+        ['reigjofre.webp', 'Reig Jofre'],
+        ['takeda.webp', 'Takeda Vaccines']
+      ]
+    },
+    {
+      key: 'biotech', label: 'Biotech', logos: [
+        ['atara.webp', 'Atara Biotherapeutics'],
+        ['bluebirdbio.webp', 'Bluebird Bio'],
+        ['elea.webp', 'Laboratorio Elea'],
+        ['opko.webp', 'OPKO'],
+        ['vertex.webp', 'Vertex']
+      ]
+    },
+    {
+      key: 'device', folder: 'medical-device', label: 'Medical Device', logos: [
+        ['abionic.webp', 'Abionic'],
+        ['boston-scientific.webp', 'Boston Scientific'],
+        ['sensimed.webp', 'Sensimed'],
+        ['trivascular.webp', 'TriVascular']
+      ]
+    },
+    {
+      key: 'academic', folder: 'ngo', label: 'Academic / NGO / Gov.', logos: [
+        ['infant.webp', 'Fundación INFANT'],
+        ['micyrn.webp', 'MICYRN'],
+        ['nih.webp', 'NIH'],
+        ['ottawa-hospital.webp', 'Ottawa Hospital Research Institute'],
+        ['uhn.webp', 'University Health Network']
+      ]
+    }
   ];
+  categories.forEach(function (cat) { if (!cat.folder) cat.folder = cat.key; });
+  categories.forEach(function (cat) { cat.count = cat.logos.length; });
 
   var marquee = document.getElementById('logo-marquee');
   var track = document.getElementById('logo-marquee-track');
@@ -35,15 +109,17 @@ function initLogoMarquee() {
   var selector = document.getElementById('logo-category-selector');
   if (!marquee || !track || !tilesEl || !labelsEl || !selector) return;
 
-  function renderLogoTile(cat) {
-    return '<div class="logo-tile" data-cat="' + cat + '"><i class="bi bi-building"></i></div>';
+  function renderLogoTile(catKey, folder, file, alt) {
+    return (
+      '<div class="logo-tile" data-cat="' + catKey + '">' +
+      '<img src="logos/webp/' + folder + '/' + file + '" alt="' + alt + '" loading="lazy" />' +
+      '</div>'
+    );
   }
 
   var sequenceHtml = categories
     .map(function (cat) {
-      var html = '';
-      for (var i = 0; i < cat.count; i++) html += renderLogoTile(cat.key);
-      return html;
+      return cat.logos.map(function (entry) { return renderLogoTile(cat.key, cat.folder, entry[0], entry[1]); }).join('');
     })
     .join('');
 

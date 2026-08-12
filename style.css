@@ -1413,23 +1413,38 @@ nav .navbar-nav {
 }
 
 .logo-tile {
-  width: 56px;
-  height: 56px;
+  width: 130px;
+  height: 130px;
   flex: 0 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 14px;
   background: #f8fafc;
   border: 1px solid rgba(15, 23, 42, 0.1);
   border-radius: 8px;
-  color: #94a3b8;
-  font-size: 0.9rem;
   transition: all 0.2s ease;
+}
+
+/* Fixed tile box keeps the marquee's position math (measured right after
+   the tiles are inserted, before images finish loading) valid regardless
+   of each logo's real aspect ratio or load timing. */
+.logo-tile img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: grayscale(1) opacity(0.7);
+  transition: filter 0.2s ease;
 }
 
 .logo-tile:hover {
   background: #ffffff;
   border-color: rgba(0, 168, 204, 0.35);
-  color: var(--accent-blue);
+}
+
+.logo-tile:hover img {
+  filter: grayscale(0) opacity(1);
 }
 

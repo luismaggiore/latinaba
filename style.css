@@ -119,6 +119,12 @@ h1 span {
     100px
   ); /* Ajusta el valor que necesites (ej. 64px, 50px, etc.) */
 }
+.gy-custom {
+  /* Bootstrap's .row > * already has margin-top: var(--bs-gutter-y);
+     without a gy-* class it's 0, so stacked columns below the lg
+     breakpoint touch with no gap. This gives them breathing room. */
+  --bs-gutter-y: clamp(24px, 6vh, 60px);
+}
 .insert-img {
   width: 100%;
   display: block;

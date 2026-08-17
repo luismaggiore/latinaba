@@ -6,8 +6,89 @@
     <title>Why Run Clinical Trials in Latin America | Timelines, Cost, MedTech & Patient Access | LatinaBA</title>
     <meta
       name="description"
-      content="Regulatory start-up from 2.8 months, 60–70% of U.S. cost, a 650M+ patient pool under-enrolled relative to its size, and the region's fastest-growing medical device trial niche. Country-by-country data on running clinical trials in Latin America, fully sourced."
+      content="Regulatory start-up from 2.8 months, 60–70% of U.S. cost and a 650M+ patient pool. Country-by-country data on clinical trials in Latin America."
     />
+
+    <!-- PREVIEW PAGE. This dated file is a review copy of why-latam.html, so it is
+         kept out of search and points its canonical at the live page to avoid
+         competing with it. WHEN THIS REPLACES why-latam.html: delete the robots
+         line and point the canonical at this file's own URL. -->
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href="https://latinaba.com/why-latam.html" />
+
+    <!-- Open Graph / LinkedIn -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LatinaBA" />
+    <meta property="og:title" content="Why run clinical trials in Latin America" />
+    <meta
+      property="og:description"
+      content="Regulatory start-up from 2.8 months, 60–70% of U.S. cost and a 650M+ patient pool that is under-enrolled relative to its size. Country-by-country data, fully sourced."
+    />
+    <meta property="og:url" content="https://luismaggiore.github.io/latinaba/why-latam20260817.html" />
+    <meta property="og:image" content="https://luismaggiore.github.io/latinaba/og-why-latam.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Clinical research quality inspection in Latin America" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter / X card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Why run clinical trials in Latin America" />
+    <meta
+      name="twitter:description"
+      content="Regulatory start-up from 2.8 months, 60–70% of U.S. cost and a 650M+ patient pool that is under-enrolled relative to its size."
+    />
+    <meta name="twitter:image" content="https://luismaggiore.github.io/latinaba/og-why-latam.jpg" />
+
+    <!-- Structured data. Only facts published on LatinaBA's own site are asserted. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://latinaba.com/#organization",
+            "name": "LatinaBA",
+            "alternateName": "LATINABA LLC",
+            "url": "https://latinaba.com/",
+            "email": "info@latinaba.com",
+            "description": "Contract Research Organization running clinical trials across Latin America, with its own legal entities in Argentina, Brazil, Chile and Mexico.",
+            "areaServed": [
+              { "@type": "Country", "name": "Argentina" },
+              { "@type": "Country", "name": "Brazil" },
+              { "@type": "Country", "name": "Chile" },
+              { "@type": "Country", "name": "Mexico" }
+            ],
+            "address": [
+              {
+                "@type": "PostalAddress",
+                "streetAddress": "1475 Juramento Av, 11th floor, suite #8",
+                "postalCode": "C1428DMQ",
+                "addressLocality": "Buenos Aires",
+                "addressCountry": "AR"
+              },
+              {
+                "@type": "PostalAddress",
+                "streetAddress": "1172 South Dixie Hwy, Suite #442",
+                "postalCode": "33146",
+                "addressLocality": "Coral Gables",
+                "addressRegion": "FL",
+                "addressCountry": "US"
+              }
+            ]
+          },
+          {
+            "@type": "WebPage",
+            "name": "Why run clinical trials in Latin America",
+            "description": "Country-by-country data on regulatory start-up timelines, cost, patient access and medical device research in Latin America.",
+            "inLanguage": "en",
+            "isPartOf": { "@id": "https://latinaba.com/#organization" },
+            "publisher": { "@id": "https://latinaba.com/#organization" },
+            "dateModified": "2026-08-17"
+          }
+        ]
+      }
+    </script>
 
     <!-- Google Fonts & Bootstrap CSS -->
     <link
@@ -49,9 +130,21 @@
         white-space: nowrap;
       }
       .ltn-cite a {
+        position: relative;
         color: var(--accent-blue);
         text-decoration: none;
         padding: 0 0.08em;
+      }
+      /* The marker glyph is ~10x16px. This pseudo-element grows the touch target
+         to the 24x24 WCAG 2.2 minimum without disturbing the text baseline. */
+      .ltn-cite a::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 24px;
+        height: 24px;
+        transform: translate(-50%, -50%);
       }
       .ltn-cite a:hover,
       .ltn-cite a:focus {
@@ -417,7 +510,10 @@
                   </div>
                   <div class="line"></div>
                   <div class="insert-img mt-custom">
-                    <img src="latam_globe_minimal.jpg" alt="Latin America Globe - LatinaBA" />
+                    <picture>
+                      <source srcset="latam_globe_minimal.webp" type="image/webp" />
+                      <img src="latam_globe_minimal.jpg" alt="Latin America Globe - LatinaBA" width="1200" height="670" loading="lazy" decoding="async" />
+                    </picture>
                   </div>
                 </div>
                 <div class="col-lg">
@@ -432,12 +528,12 @@
                     <figcaption class="ltn-chart-title">Latin America's share of the global total</figcaption>
                     <div class="ltn-gap-row">
                       <span class="ltn-gap-label">World population</span>
-                      <div class="ltn-gap-track"><div class="ltn-gap-fill" style="width: 80%"></div></div>
+                      <div class="ltn-gap-track" aria-hidden="true"><div class="ltn-gap-fill" style="width: 80%"></div></div>
                       <span class="ltn-gap-value">8%+</span>
                     </div>
                     <div class="ltn-gap-row">
                       <span class="ltn-gap-label">Global oncology trials</span>
-                      <div class="ltn-gap-track">
+                      <div class="ltn-gap-track" aria-hidden="true">
                         <div class="ltn-gap-fill ltn-gap-fill--range" style="width: 50%"></div>
                         <div class="ltn-gap-fill" style="width: 36%"></div>
                       </div>
@@ -471,17 +567,22 @@
                   <!-- Chart B: seasonal enrollment windows -->
                   <figure class="ltn-chart mb-custom">
                     <figcaption class="ltn-chart-title">Peak season for respiratory indications</figcaption>
+                    <!-- The month bands are conveyed by colour alone, so each row
+                         carries an equivalent sentence for screen readers and the
+                         cells themselves are hidden from the accessibility tree. -->
                     <div class="ltn-season-row">
-                      <span class="ltn-season-label">Northern</span>
-                      <div class="ltn-season-cells">
+                      <span class="ltn-season-label" aria-hidden="true">Northern</span>
+                      <span class="visually-hidden">Northern Hemisphere peak season: December through March.</span>
+                      <div class="ltn-season-cells" aria-hidden="true">
                         <span class="on-soft"></span><span class="on-soft"></span><span class="on-soft"></span>
                         <span></span><span></span><span></span><span></span><span></span><span></span>
                         <span></span><span></span><span class="on-soft"></span>
                       </div>
                     </div>
                     <div class="ltn-season-row">
-                      <span class="ltn-season-label">Southern</span>
-                      <div class="ltn-season-cells">
+                      <span class="ltn-season-label" aria-hidden="true">Southern</span>
+                      <span class="visually-hidden">Southern Hemisphere peak season: June through September.</span>
+                      <div class="ltn-season-cells" aria-hidden="true">
                         <span></span><span></span><span></span><span></span><span></span>
                         <span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span>
                         <span></span><span></span><span></span>
@@ -513,7 +614,10 @@
                   </div>
                   <div class="line"></div>
                   <div class="insert-img mt-custom">
-                    <img src="clinical_doctor.jpg" alt="Clinical investigator consultation - LatinaBA" />
+                    <picture>
+                      <source srcset="clinical_doctor.webp" type="image/webp" />
+                      <img src="clinical_doctor.jpg" alt="Clinical investigator consultation - LatinaBA" width="1200" height="805" loading="lazy" decoding="async" />
+                    </picture>
                   </div>
                 </div>
               </div>
@@ -526,7 +630,10 @@
               <div class="row gx-custom gy-custom">
                 <div class="col-lg">
                   <div class="insert-img mb-custom">
-                    <img src="clinical_lab.jpg" alt="Clinical laboratory and device testing - LatinaBA" />
+                    <picture>
+                      <source srcset="clinical_lab.webp" type="image/webp" />
+                      <img src="clinical_lab.jpg" alt="Clinical laboratory and device testing - LatinaBA" width="1200" height="805" loading="lazy" decoding="async" />
+                    </picture>
                   </div>
                   <span class="label-section">05 / Medical devices</span>
                   <h2 class="mb-custom">MedTech is where the region is professionalizing fastest</h2>
@@ -542,7 +649,10 @@
                 </div>
                 <div class="col-lg">
                   <div class="insert-img mb-custom">
-                    <img src="regulatory_track_record.jpg" alt="FDA Quality Inspection & Regulatory Audit - LatinaBA" />
+                    <picture>
+                      <source srcset="regulatory_track_record.webp" type="image/webp" />
+                      <img src="regulatory_track_record.jpg" alt="FDA Quality Inspection & Regulatory Audit - LatinaBA" width="1200" height="670" loading="lazy" decoding="async" />
+                    </picture>
                   </div>
                   <span class="label-section">06 / Regulatory momentum</span>
                   <h2 class="mb-custom">The rules are getting faster, not slower</h2>
@@ -585,11 +695,14 @@
                 <div class="col-12">
                   <div class="table-responsive">
                     <table class="ltn-country-table">
+                      <caption class="visually-hidden">
+                        Regulatory start-up time by country, with LatinaBA presence and team size. Mexico 2.8 months, own legal entity, 7 staff. Argentina 4.5 months, own legal entity and operations headquarters, 19 staff. Chile 4.6 months, own legal entity, 3 staff. Brazil 4 to 7 months, own legal entity, 17 staff. Colombia 7 months, IoR partner, 2 staff. Peru up to 9 months, IoR partner, delivered via partner network.
+                      </caption>
                       <thead>
                         <tr>
                           <th scope="col">Country</th>
                           <th scope="col">Regulatory start-up<sup class="ltn-cite"><a href="#ref-2" aria-label="Source 2">2</a></sup></th>
-                          <th scope="col" class="ltn-bar-cell">0 &ndash; 9 months</th>
+                          <th scope="col" class="ltn-bar-cell" aria-hidden="true">0 &ndash; 9 months</th>
                           <th scope="col">LatinaBA presence<sup class="ltn-cite"><a href="#ref-9" aria-label="Source 9">9</a></sup></th>
                           <th scope="col">Team on the ground<sup class="ltn-cite"><a href="#ref-9" aria-label="Source 9">9</a></sup></th>
                         </tr>
@@ -598,7 +711,7 @@
                         <tr>
                           <td class="ltn-country">Mexico</td>
                           <td class="ltn-months">2.8 months</td>
-                          <td class="ltn-bar-cell">
+                          <td class="ltn-bar-cell" aria-hidden="true">
                             <div class="ltn-bar-track"><div class="ltn-bar-fill" style="width: 31%"></div></div>
                           </td>
                           <td><span class="ltn-presence"><span class="ltn-dot ltn-dot--own"></span> Own legal entity</span></td>
@@ -607,7 +720,7 @@
                         <tr>
                           <td class="ltn-country">Argentina</td>
                           <td class="ltn-months">4.5 months</td>
-                          <td class="ltn-bar-cell">
+                          <td class="ltn-bar-cell" aria-hidden="true">
                             <div class="ltn-bar-track"><div class="ltn-bar-fill" style="width: 50%"></div></div>
                           </td>
                           <td><span class="ltn-presence"><span class="ltn-dot ltn-dot--own"></span> Own legal entity — Operations HQ</span></td>
@@ -616,7 +729,7 @@
                         <tr>
                           <td class="ltn-country">Chile</td>
                           <td class="ltn-months">4.6 months</td>
-                          <td class="ltn-bar-cell">
+                          <td class="ltn-bar-cell" aria-hidden="true">
                             <div class="ltn-bar-track"><div class="ltn-bar-fill" style="width: 51%"></div></div>
                           </td>
                           <td><span class="ltn-presence"><span class="ltn-dot ltn-dot--own"></span> Own legal entity</span></td>
@@ -625,7 +738,7 @@
                         <tr>
                           <td class="ltn-country">Brazil</td>
                           <td class="ltn-months">4–7 months</td>
-                          <td class="ltn-bar-cell">
+                          <td class="ltn-bar-cell" aria-hidden="true">
                             <div class="ltn-bar-track"><div class="ltn-bar-fill" style="width: 61%"></div></div>
                           </td>
                           <td><span class="ltn-presence"><span class="ltn-dot ltn-dot--own"></span> Own legal entity</span></td>
@@ -634,7 +747,7 @@
                         <tr>
                           <td class="ltn-country">Colombia</td>
                           <td class="ltn-months">7.0 months</td>
-                          <td class="ltn-bar-cell">
+                          <td class="ltn-bar-cell" aria-hidden="true">
                             <div class="ltn-bar-track"><div class="ltn-bar-fill" style="width: 78%"></div></div>
                           </td>
                           <td><span class="ltn-presence"><span class="ltn-dot ltn-dot--ior"></span> IoR partner</span></td>
@@ -643,7 +756,7 @@
                         <tr>
                           <td class="ltn-country">Peru</td>
                           <td class="ltn-months">Up to 9 months</td>
-                          <td class="ltn-bar-cell">
+                          <td class="ltn-bar-cell" aria-hidden="true">
                             <div class="ltn-bar-track"><div class="ltn-bar-fill" style="width: 100%"></div></div>
                           </td>
                           <td><span class="ltn-presence"><span class="ltn-dot ltn-dot--ior"></span> IoR partner</span></td>

@@ -711,11 +711,14 @@
           if (!target) return;
           e.preventDefault();
           var smoother = window.ScrollSmoother && ScrollSmoother.get ? ScrollSmoother.get() : null;
-          if (smoother) {
-            smoother.scrollTo(target, true, "top " + NAV_OFFSET + "px");
+          if (smoother && typeof smoother.offset === "function") {
+            // Resolve the target to an absolute scroll position, then scroll to that
+            // number. Passing an alignment string here is ambiguous and can land at 0.
+            var y = smoother.offset(target, "top top") - NAV_OFFSET;
+            smoother.scrollTo(y < 0 ? 0 : y, true);
           } else {
             window.scrollTo({
-              top: target.getBoundingClientRect().top + window.pageYOffset - NAV_OFFSET,
+              top: Math.max(0, target.getBoundingClientRect().top + window.pageYOffset - NAV_OFFSET),
               behavior: "smooth",
             });
           }

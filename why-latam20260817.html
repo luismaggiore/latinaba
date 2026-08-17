@@ -28,8 +28,9 @@
     <script src="https://unpkg.com/d3@7/dist/d3.min.js"></script>
     <script src="https://unpkg.com/topojson-client@3/dist/topojson-client.min.js"></script>
 
-    <!-- Why LATAM: part dividers, inline citations, country comparison table and
-         reference list (scoped to this page). Move into style.css for production. -->
+    <!-- Why LATAM: part dividers, inline citations, charts, country table and
+         reference list (scoped to this page). Move into style.css for production.
+         Charts are pure CSS — no chart library, no extra requests. -->
     <style>
       .ltn-part-label {
         display: block;
@@ -56,6 +57,106 @@
       .ltn-cite a:focus {
         text-decoration: underline;
       }
+
+      /* ---------- Charts (shared) ---------- */
+      .ltn-chart {
+        margin: 0;
+      }
+      .ltn-chart-title {
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        font-weight: 600;
+        margin-bottom: 1.25rem;
+      }
+      .ltn-chart-note {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        margin-top: 1rem;
+      }
+
+      /* ---------- Chart A: representation gap ---------- */
+      .ltn-gap-row {
+        display: grid;
+        grid-template-columns: minmax(120px, 1fr) 2.2fr auto;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.1rem;
+      }
+      .ltn-gap-label {
+        font-size: 0.875rem;
+        color: var(--ink);
+      }
+      .ltn-gap-track {
+        position: relative;
+        height: 14px;
+        background: rgba(15, 23, 42, 0.05);
+        border-radius: 0 7px 7px 0;
+      }
+      .ltn-gap-fill {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        background: var(--accent-blue);
+        border-radius: 0 4px 4px 0;
+      }
+      /* The lighter extension shows the upper end of a reported range. */
+      .ltn-gap-fill--range {
+        background: rgba(4, 157, 191, 0.28);
+      }
+      .ltn-gap-value {
+        font-size: 0.9375rem;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+        color: var(--ink);
+      }
+
+      /* ---------- Chart B: seasonal windows ---------- */
+      .ltn-season-row {
+        display: grid;
+        grid-template-columns: minmax(90px, auto) 1fr;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 0.5rem;
+      }
+      .ltn-season-label {
+        font-size: 0.8125rem;
+        color: var(--ink);
+        white-space: nowrap;
+      }
+      .ltn-season-cells {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 2px;
+      }
+      .ltn-season-cells span {
+        height: 14px;
+        background: rgba(15, 23, 42, 0.05);
+        border-radius: 2px;
+      }
+      .ltn-season-cells span.on {
+        background: var(--accent-blue);
+      }
+      .ltn-season-cells span.on-soft {
+        background: rgba(4, 157, 191, 0.28);
+      }
+      .ltn-season-months {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 2px;
+        margin-top: 0.35rem;
+      }
+      .ltn-season-months span {
+        font-size: 0.6875rem;
+        color: var(--text-muted);
+        text-align: center;
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* ---------- Country table ---------- */
       .ltn-country-table {
         width: 100%;
         border-collapse: collapse;
@@ -81,10 +182,7 @@
       .ltn-country-table tr:last-child td {
         border-bottom: none;
       }
-      .ltn-country {
-        font-weight: 600;
-        white-space: nowrap;
-      }
+      .ltn-country,
       .ltn-months {
         font-weight: 600;
         white-space: nowrap;
@@ -132,11 +230,36 @@
         line-height: 1.7;
         margin-top: 1.25rem;
       }
-      /* Reference list */
+
+      /* ---------- References (collapsed by default) ---------- */
+      .ltn-refs-details summary {
+        cursor: pointer;
+        list-style: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: var(--accent-blue);
+        padding: 0.5rem 0;
+      }
+      .ltn-refs-details summary::-webkit-details-marker {
+        display: none;
+      }
+      .ltn-refs-details summary::after {
+        content: "+";
+        font-weight: 400;
+        font-size: 1.1rem;
+        line-height: 1;
+      }
+      .ltn-refs-details[open] summary::after {
+        content: "\2212";
+      }
       .ltn-refs {
         color: var(--text-muted);
         font-size: 0.875rem;
         line-height: 1.7;
+        padding-top: 1.5rem;
       }
       .ltn-refs ol {
         padding-left: 1.5rem;
@@ -169,6 +292,13 @@
       @media (max-width: 767px) {
         .ltn-bar-cell {
           display: none;
+        }
+        .ltn-gap-row {
+          grid-template-columns: 1fr auto;
+        }
+        .ltn-gap-row .ltn-gap-track {
+          grid-column: 1 / -1;
+          order: 3;
         }
       }
     </style>
@@ -230,7 +360,7 @@
                   </div>
                   <div class="col-lg-5 col-xl-3 mb-3">
                     <p class="hero-p">
-                      A 650M+ patient pool that is under-enrolled relative to its size, regulatory start-up from 2.8 months, and 60–70% of U.S. cost — in your time zone. Every figure on this page is sourced.
+                      A 650M+ patient pool under-enrolled relative to its size, regulatory start-up from 2.8 months, and 60–70% of U.S. cost — in your time zone.
                     </p>
                     <div class="line d-none d-lg-block mb-4"></div>
                     <a class="btn btn-latinaba" href="leadership.html"> Meet our Experts </a>
@@ -278,7 +408,7 @@
                   <span class="label-section">01 / The bottleneck</span>
                   <h2 class="mb-custom">Enrollment, not science, is what delays trials</h2>
                   <p class="section-description mb-custom">
-                    Roughly <strong>80% of clinical trials fail to meet their enrollment timelines</strong>, and up to half of research sites enroll one patient or none at all. A delayed launch can cost as much as $8M in lost revenue per day.<sup class="ltn-cite"><a href="#ref-1" aria-label="Source 1">1</a></sup> Where you place a study has stopped being a cost decision and become a timeline decision.
+                    Roughly <strong>80% of clinical trials fail to meet their enrollment timelines</strong>, up to half of sites enroll one patient or none, and a delayed launch can cost $8M a day in lost revenue.<sup class="ltn-cite"><a href="#ref-1" aria-label="Source 1">1</a></sup>
                   </p>
                   <div class="d-flex flex-wrap gap-4 stats-display mb-custom">
                     <p class="mb-0"><span>~80%</span> Trials missing enrollment timelines<sup class="ltn-cite"><a href="#ref-1" aria-label="Source 1">1</a></sup></p>
@@ -294,16 +424,33 @@
                   <span class="label-section">02 / Patient access</span>
                   <h2 class="mb-custom">The patients are there, and under-enrolled</h2>
                   <p class="section-description mb-custom">
-                    Latin America holds <strong>more than 8% of the world's population but hosted only about 3.6–5% of global oncology trials in 2023</strong>.<sup class="ltn-cite"><a href="#ref-2" aria-label="Source 2">2</a></sup> The region's patient pool is proportionally far less recruited than its size would suggest: 650M+ people, over 80% of them urban, with treatment-naïve populations available to sponsors.<sup class="ltn-cite"><a href="#ref-3" aria-label="Source 3">3</a></sup>
+                    The region holds more than 8% of the world's population but hosted about 3.6–5% of global oncology trials in 2023.<sup class="ltn-cite"><a href="#ref-2" aria-label="Source 2">2</a></sup> That gap is the opportunity: 650M+ people, over 80% urban, with treatment-naïve populations.<sup class="ltn-cite"><a href="#ref-3" aria-label="Source 3">3</a></sup>
                   </p>
+
+                  <!-- Chart A: the representation gap -->
+                  <figure class="ltn-chart mb-custom">
+                    <figcaption class="ltn-chart-title">Latin America's share of the global total</figcaption>
+                    <div class="ltn-gap-row">
+                      <span class="ltn-gap-label">World population</span>
+                      <div class="ltn-gap-track"><div class="ltn-gap-fill" style="width: 80%"></div></div>
+                      <span class="ltn-gap-value">8%+</span>
+                    </div>
+                    <div class="ltn-gap-row">
+                      <span class="ltn-gap-label">Global oncology trials</span>
+                      <div class="ltn-gap-track">
+                        <div class="ltn-gap-fill ltn-gap-fill--range" style="width: 50%"></div>
+                        <div class="ltn-gap-fill" style="width: 36%"></div>
+                      </div>
+                      <span class="ltn-gap-value">3.6&ndash;5%</span>
+                    </div>
+                    <figcaption class="ltn-chart-note">
+                      Scale 0&ndash;10%. The lighter extension marks the upper end of the reported range.<sup class="ltn-cite"><a href="#ref-2" aria-label="Source 2">2</a></sup>
+                    </figcaption>
+                  </figure>
+
                   <p class="section-description mb-custom">
-                    It is also among the most ancestrally admixed regions on the planet. Three-way continental admixture — Native American, European and African — is documented across Brazil, Chile, Colombia, Mexico and Peru in a study of 7,342 individuals, with wide variation both between and within countries.<sup class="ltn-cite"><a href="#ref-8" aria-label="Source 8">8</a></sup> For sponsors who need enrollment that reflects real-world patient diversity, that representativeness is structural here rather than something engineered site by site.
+                    It is also among the most ancestrally admixed regions on the planet — Native American, European and African lineages within the same trial population, documented across five countries.<sup class="ltn-cite"><a href="#ref-8" aria-label="Source 8">8</a></sup> Representativeness is structural here, not engineered site by site.
                   </p>
-                  <div class="d-flex flex-wrap gap-4 stats-display mb-custom">
-                    <p class="mb-0"><span>650M+</span> Population, 80%+ urban<sup class="ltn-cite"><a href="#ref-3" aria-label="Source 3">3</a></sup></p>
-                    <p class="mb-0"><span>8%+</span> Of world population<sup class="ltn-cite"><a href="#ref-2" aria-label="Source 2">2</a></sup></p>
-                    <p class="mb-0"><span>3.6-5%</span> Of global oncology trials<sup class="ltn-cite"><a href="#ref-2" aria-label="Source 2">2</a></sup></p>
-                  </div>
                   <div class="line"></div>
                 </div>
               </div>
@@ -318,19 +465,46 @@
                   <span class="label-section">03 / Seasonal advantage</span>
                   <h2 class="mb-custom">Two hemispheres, one shorter calendar</h2>
                   <p class="section-description mb-custom">
-                    For influenza, RSV and other seasonal indications, the Southern Hemisphere winter runs roughly six months offset from the Northern one. Sponsors can run a parallel cohort here while their U.S. and European sites wait for the season to arrive, opening two enrollment windows in the same year instead of waiting a full cycle for the second.<sup class="ltn-cite"><a href="#ref-9" aria-label="Source 9">9</a></sup>
+                    For influenza, RSV and other seasonal indications the Southern Hemisphere winter runs about six months offset from the Northern one, so a parallel cohort can enroll here while northern sites wait for the season.<sup class="ltn-cite"><a href="#ref-9" aria-label="Source 9">9</a></sup>
                   </p>
-                  <div class="d-flex flex-wrap gap-4 stats-display mb-custom">
-                    <p class="mb-0"><span>~6 mo</span> Calendar offset vs Northern Hemisphere</p>
-                    <p class="mb-0"><span>2x / yr</span> Seasonal enrollment windows<sup class="ltn-cite"><a href="#ref-9" aria-label="Source 9">9</a></sup></p>
-                  </div>
+
+                  <!-- Chart B: seasonal enrollment windows -->
+                  <figure class="ltn-chart mb-custom">
+                    <figcaption class="ltn-chart-title">Peak season for respiratory indications</figcaption>
+                    <div class="ltn-season-row">
+                      <span class="ltn-season-label">Northern</span>
+                      <div class="ltn-season-cells">
+                        <span class="on-soft"></span><span class="on-soft"></span><span class="on-soft"></span>
+                        <span></span><span></span><span></span><span></span><span></span><span></span>
+                        <span></span><span></span><span class="on-soft"></span>
+                      </div>
+                    </div>
+                    <div class="ltn-season-row">
+                      <span class="ltn-season-label">Southern</span>
+                      <div class="ltn-season-cells">
+                        <span></span><span></span><span></span><span></span><span></span>
+                        <span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span>
+                        <span></span><span></span><span></span>
+                      </div>
+                    </div>
+                    <div class="ltn-season-row" aria-hidden="true">
+                      <span class="ltn-season-label"></span>
+                      <div class="ltn-season-months">
+                        <span>J</span><span>F</span><span>M</span><span>A</span><span>M</span><span>J</span>
+                        <span>J</span><span>A</span><span>S</span><span>O</span><span>N</span><span>D</span>
+                      </div>
+                    </div>
+                    <figcaption class="ltn-chart-note">
+                      Two enrollment windows in the same calendar year instead of waiting a full cycle for the second.
+                    </figcaption>
+                  </figure>
                   <div class="line"></div>
                 </div>
                 <div class="col-lg">
                   <span class="label-section">04 / Cost &amp; proximity</span>
                   <h2 class="mb-custom">Lower cost, same time zone</h2>
                   <p class="section-description mb-custom">
-                    Sponsors in Brazil and Argentina typically pay <strong>60–70% of equivalent U.S. costs</strong>.<sup class="ltn-cite"><a href="#ref-3" aria-label="Source 3">3</a></sup> Latin America also shares U.S. time zones, so the savings don't cost you real-time collaboration. And this is not a shrinking market: regional clinical trial spend is projected to grow from about $1.5B in 2025 to $2.8B by 2033, an 8.2% CAGR, with Argentina expected to post the fastest growth in the region.<sup class="ltn-cite"><a href="#ref-4" aria-label="Source 4">4</a></sup>
+                    Sponsors in Brazil and Argentina typically pay <strong>60–70% of equivalent U.S. costs</strong>,<sup class="ltn-cite"><a href="#ref-3" aria-label="Source 3">3</a></sup> and the region shares U.S. time zones, so the savings don't cost real-time collaboration. Nor is it a shrinking market: regional trial spend is projected to grow from about $1.5B in 2025 to $2.8B by 2033, with Argentina growing fastest.<sup class="ltn-cite"><a href="#ref-4" aria-label="Source 4">4</a></sup>
                   </p>
                   <div class="d-flex flex-wrap gap-4 stats-display mb-custom">
                     <p class="mb-0"><span>60-70%</span> Cost vs US<sup class="ltn-cite"><a href="#ref-3" aria-label="Source 3">3</a></sup></p>
@@ -338,6 +512,9 @@
                     <p class="mb-0"><span>0-2 hrs</span> Time difference from US East</p>
                   </div>
                   <div class="line"></div>
+                  <div class="insert-img mt-custom">
+                    <img src="clinical_doctor.jpg" alt="Clinical investigator consultation - LatinaBA" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -348,10 +525,13 @@
             <div class="container-fluid">
               <div class="row gx-custom gy-custom">
                 <div class="col-lg">
+                  <div class="insert-img mb-custom">
+                    <img src="clinical_lab.jpg" alt="Clinical laboratory and device testing - LatinaBA" />
+                  </div>
                   <span class="label-section">05 / Medical devices</span>
                   <h2 class="mb-custom">MedTech is where the region is professionalizing fastest</h2>
                   <p class="section-description mb-custom">
-                    Latin America accounted for <strong>2.1% of the global medical device clinical trials market in 2024</strong> — about $357M, projected to reach $457M by 2030 — and within that, <strong>pivotal studies are both the largest segment at 42.4% and the fastest growing</strong>, with Brazil expected to lead regional growth.<sup class="ltn-cite"><a href="#ref-5" aria-label="Source 5">5</a></sup> Pivotal device work is exactly the kind that has to survive an FDA inspection, and it is the work LatinaBA has already had inspected.<sup class="ltn-cite"><a href="#ref-9" aria-label="Source 9">9</a></sup>
+                    Latin America was <strong>2.1% of the global medical device trials market in 2024</strong> — about $357M, heading to $457M by 2030. Within it, <strong>pivotal studies are the largest segment at 42.4%</strong> and the fastest growing, with Brazil leading.<sup class="ltn-cite"><a href="#ref-5" aria-label="Source 5">5</a></sup> Pivotal device work is what has to survive an FDA inspection — work we have already had inspected.<sup class="ltn-cite"><a href="#ref-9" aria-label="Source 9">9</a></sup>
                   </p>
                   <div class="d-flex flex-wrap gap-4 stats-display mb-custom">
                     <p class="mb-0"><span>2.1%</span> Of global device-trial market<sup class="ltn-cite"><a href="#ref-5" aria-label="Source 5">5</a></sup></p>
@@ -367,7 +547,7 @@
                   <span class="label-section">06 / Regulatory momentum</span>
                   <h2 class="mb-custom">The rules are getting faster, not slower</h2>
                   <p class="section-description mb-custom">
-                    Brazil's Law 14.874/2024, enacted in May 2024 and in force since that August, gives the regulator <strong>90 business days</strong> to respond to a trial application and lets studies start on local ethics committee review alone — removing a layer that used to define Brazilian start-up.<sup class="ltn-cite"><a href="#ref-6" aria-label="Source 6">6</a></sup> Decree 12.651/2025 then regulated the Act, creating the national research ethics system (SINEP) and detailing review timeframes.<sup class="ltn-cite"><a href="#ref-7" aria-label="Source 7">7</a></sup> Every country in the region operates under ICH-GCP with active inspection systems,<sup class="ltn-cite"><a href="#ref-9" aria-label="Source 9">9</a></sup> and sponsors already trust LatAm with pivotal work: the region carries roughly <strong>15.6% of global Phase III oncology trials</strong>, even while early-phase activity stays thin.<sup class="ltn-cite"><a href="#ref-2" aria-label="Source 2">2</a></sup>
+                    Brazil's Law 14.874/2024 gives the regulator <strong>90 business days</strong> to respond and lets studies start on local ethics committee review alone.<sup class="ltn-cite"><a href="#ref-6" aria-label="Source 6">6</a></sup> Decree 12.651/2025 then created the national research ethics system and set review timeframes.<sup class="ltn-cite"><a href="#ref-7" aria-label="Source 7">7</a></sup> Every country in the region runs under ICH-GCP with active inspections,<sup class="ltn-cite"><a href="#ref-9" aria-label="Source 9">9</a></sup> and the region already carries about <strong>15.6% of global Phase III oncology trials</strong>.<sup class="ltn-cite"><a href="#ref-2" aria-label="Source 2">2</a></sup>
                   </p>
                   <div class="d-flex flex-wrap gap-4 stats-display mb-custom">
                     <p class="mb-0"><span>90 days</span> Brazil statutory response window<sup class="ltn-cite"><a href="#ref-6" aria-label="Source 6">6</a></sup></p>
@@ -396,7 +576,7 @@
                   <span class="label-section">07 / Country by country</span>
                   <h2 class="mb-custom">Six different start-up clocks, and where we sit on them</h2>
                   <p class="section-description mb-custom">
-                    "Latin America" is not a single regulatory environment. Median time from submission to first patient ranges from under three months to nine.<sup class="ltn-cite"><a href="#ref-2" aria-label="Source 2">2</a></sup> That spread is the most important variable in a regional feasibility decision. Below is where each country sits, and where LatinaBA holds its own legal entity and staff versus working through vetted IoR partners.
+                    "Latin America" is not a single regulatory environment: median time from submission to first patient runs from under three months to nine.<sup class="ltn-cite"><a href="#ref-2" aria-label="Source 2">2</a></sup> That spread is the most important variable in a regional feasibility decision.
                   </p>
                 </div>
               </div>
@@ -473,7 +653,7 @@
                     </table>
                   </div>
                   <p class="ltn-table-note">
-                    Start-up columns are published medians for trial activation<sup class="ltn-cite"><a href="#ref-2" aria-label="Source 2">2</a></sup> and are indicative, not commitments — actual timelines depend on indication, site mix and submission quality. Where a range is reported, the bar reflects its midpoint. Presence and headcount are LatinaBA's own operational records.<sup class="ltn-cite"><a href="#ref-9" aria-label="Source 9">9</a></sup> Beyond the four countries where it holds its own legal entity, LatinaBA operates a U.S. contracting hub (LATINABA LLC) and has run studies in Ecuador, Venezuela, Panama, Costa Rica, Paraguay, Bolivia, Belize and Uruguay.<sup class="ltn-cite"><a href="#ref-9" aria-label="Source 9">9</a></sup>
+                    Start-up columns are published medians<sup class="ltn-cite"><a href="#ref-2" aria-label="Source 2">2</a></sup> and are indicative, not commitments. Where a range is reported, the bar reflects its midpoint. Presence and headcount are our own operational records.<sup class="ltn-cite"><a href="#ref-9" aria-label="Source 9">9</a></sup> Beyond these four own-entity countries we run a U.S. contracting hub and have delivered studies in eight more.<sup class="ltn-cite"><a href="#ref-9" aria-label="Source 9">9</a></sup>
                   </p>
                   <div class="line mt-custom"></div>
                 </div>
@@ -489,7 +669,7 @@
                   <span class="label-section">08 / Where friction shows up</span>
                   <h2 class="mb-custom">Where it gets hard, and how we clear it</h2>
                   <p class="section-description mb-custom">
-                    The table above is also the honest version of the argument: on those published medians, a study placed in Peru or Colombia can wait roughly two to three times longer to activate than the same study in Mexico.<sup class="ltn-cite"><a href="#ref-2" aria-label="Source 2">2</a></sup> Regulatory timelines and customs are where trials lose time in this region, and neither is solved remotely. LatinaBA runs in-country regulatory experts who get submissions right the first time and dedicated customs brokers who handle import/export country by country, so the friction is absorbed before it reaches your timeline.<sup class="ltn-cite"><a href="#ref-9" aria-label="Source 9">9</a></sup>
+                    The table is also the honest version of the argument: on those medians, Peru or Colombia can take two to three times longer to activate than Mexico.<sup class="ltn-cite"><a href="#ref-2" aria-label="Source 2">2</a></sup> Regulatory timelines and customs are where time is lost here, and neither is solved remotely. We run in-country regulatory staff and dedicated customs brokers, so the friction is absorbed before it reaches your timeline.<sup class="ltn-cite"><a href="#ref-9" aria-label="Source 9">9</a></sup>
                   </p>
                   <div class="d-flex flex-wrap gap-4 stats-display mb-custom">
                     <p class="mb-0"><span>3.2x</span> Spread, fastest to slowest country<sup class="ltn-cite"><a href="#ref-2" aria-label="Source 2">2</a></sup></p>
@@ -509,10 +689,10 @@
                   <span class="label-section">09 / One team</span>
                   <h2 class="mb-custom">One team, for the life of the study</h2>
                   <p class="section-description mb-custom">
-                    Our own record is auditable: an FDA PMA inspection in Chile for a Class III device that closed with <strong>No Action Indicated</strong>, and an FDA inspection of a biologic study that closed with no findings — both as top recruiter. Behind that sits a quality system of 60+ validated SOPs and policies, tested by more than 50 capability audits.<sup class="ltn-cite"><a href="#ref-9" aria-label="Source 9">9</a></sup>
+                    Our record is auditable: an FDA PMA inspection in Chile for a Class III device closed with <strong>No Action Indicated</strong>, and an FDA inspection of a biologic study closed with no findings — both as top recruiter. Behind it, 60+ validated SOPs tested by more than 50 capability audits.<sup class="ltn-cite"><a href="#ref-9" aria-label="Source 9">9</a></sup>
                   </p>
                   <p class="section-description mb-custom">
-                    LatinaBA works in Spanish, English and Portuguese across four countries where it holds its own legal entity, so if one agency slows down, your study keeps moving through another. Sponsors keep the same point of contact from start to finish, with a direct line to senior management rather than a rotating account team.<sup class="ltn-cite"><a href="#ref-9" aria-label="Source 9">9</a></sup>
+                    We work in Spanish, English and Portuguese across four countries with our own legal entity, and you keep the same point of contact throughout — with a direct line to senior management.<sup class="ltn-cite"><a href="#ref-9" aria-label="Source 9">9</a></sup>
                   </p>
                   <a class="btn btn-latinaba" href="contact.html">Talk to our team</a>
                 </div>
@@ -529,77 +709,77 @@
             </div>
           </section>
 
-          <!-- ===================== REFERENCES ===================== -->
+          <!-- ===================== REFERENCES (collapsed) ===================== -->
           <section class="bg-ltn z-2" id="references">
             <div class="container-fluid">
               <span class="label-section">References</span>
-              <h2 class="mb-custom">Sources</h2>
-              <div class="row gx-custom gy-custom">
-                <div class="col-lg-7">
-                  <div class="ltn-refs">
-                    <ol>
-                      <li id="ref-1">
-                        <em>Clinical trial delays: America's patient recruitment dilemma</em> — Clinical Trials Arena.
-                        <a href="https://www.clinicaltrialsarena.com/features/featureclinical-trial-patient-recruitment/" target="_blank" rel="noopener">Read source</a>.
-                        Used for: share of trials missing enrollment timelines, share of sites enrolling one patient or none, and revenue lost per day of delay.
-                      </li>
-                      <li id="ref-2">
-                        <em>Reframing Clinical Research in Latin America</em> — peer-reviewed, PubMed Central.
-                        <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12959233/" target="_blank" rel="noopener">Read source</a>.
-                        Used for: regional share of world population, share of global oncology trials (2023), share of global Phase III oncology trials, and country-level regulatory start-up medians. The 3.2× spread is calculated from those medians (9.0 ÷ 2.8).
-                      </li>
-                      <li id="ref-3">
-                        <em>Latin America: A Compelling Region To Conduct Your Clinical Trials</em> — Clinical Leader.
-                        <a href="https://www.clinicalleader.com/doc/latin-america-a-compelling-region-to-conduct-your-clinical-trials-0001" target="_blank" rel="noopener">Read source</a>.
-                        Used for: regional population and urbanisation rate, treatment-naïve populations, and the 60–70% cost differential versus the United States.
-                      </li>
-                      <li id="ref-4">
-                        <em>Latin America Clinical Trials Market Size &amp; Outlook, 2033</em> — Grand View Research.
-                        <a href="https://www.grandviewresearch.com/horizon/outlook/clinical-trials-market/latin-america" target="_blank" rel="noopener">Read source</a>.
-                        Used for: regional clinical trial market size (2025 and 2033), the 8.2% CAGR, and Argentina as the region's fastest-growing market.
-                      </li>
-                      <li id="ref-5">
-                        <em>Latin America Medical Device Clinical Trials Market Size &amp; Outlook, 2030</em> — Grand View Research.
-                        <a href="https://www.grandviewresearch.com/horizon/outlook/medical-device-clinical-trials-market/latin-america" target="_blank" rel="noopener">Read source</a>.
-                        Used for: the region's 2.1% share of the global device-trial market (2024), market size for 2024 and 2030, the 42.4% pivotal-study share, and Brazil as the fastest-growing device-trial market.
-                      </li>
-                      <li id="ref-6">
-                        <em>New Law Expected To Boost Clinical Research In Brazil</em> — Clinical Leader.
-                        <a href="https://www.clinicalleader.com/doc/new-law-expected-to-boost-clinical-research-in-brazil-0001" target="_blank" rel="noopener">Read source</a>.
-                        Used for: Law 14.874/2024, its enactment in May 2024 and entry into force 90 days later, the 90-business-day regulatory response window, and the move to local ethics committee review.
-                      </li>
-                      <li id="ref-7">
-                        <em>Brazil Regulates Clinical Research Act: A Complete Review of Decree #12,651/2025</em> — RNA Law.
-                        <a href="https://www.rna.law/insights/brazil-regulates-clinical-research-act-a-complete-review-of-decree-12-651-2025---part-1" target="_blank" rel="noopener">Read source</a>.
-                        Used for: Decree 12.651/2025, the creation of the National System of Ethics in Research (SINEP), and the regulation of review timeframes.
-                      </li>
-                      <li id="ref-8">
-                        Ruiz-Linares A, <em>et al.</em> (2014). <em>Admixture in Latin America: Geographic Structure, Phenotypic Diversity and Self-Perception of Ancestry Based on 7,342 Individuals</em> — PLOS Genetics.
-                        <a href="https://journals.plos.org/plosgenetics/article?id=10.1371%2Fjournal.pgen.1004572" target="_blank" rel="noopener">Read source</a>.
-                        Used for: three-way continental admixture (Native American, European, African) across Brazil, Chile, Colombia, Mexico and Peru, and the variation between and within countries.
-                      </li>
-                      <li id="ref-9">
-                        LatinaBA operational records and Corporate Presentation, May 2026 — internal, available on request.
-                        Used for: legal entities and headcount by country, working languages, FDA PMA inspection in Chile closing with No Action Indicated, FDA inspection of a biologic study closing with no findings, quality system scope (60+ validated SOPs, 50+ capability audits), ICH-GCP operation and inspection systems across countries of operation, Class I–III device experience, seasonal enrollment practice, and the customs and regulatory-timeline friction points described in section 08.
-                      </li>
-                    </ol>
+              <details class="ltn-refs-details">
+                <summary>Nine sources for every figure on this page</summary>
+                <div class="row gx-custom gy-custom">
+                  <div class="col-lg-7">
+                    <div class="ltn-refs">
+                      <ol>
+                        <li id="ref-1">
+                          <em>Clinical trial delays: America's patient recruitment dilemma</em> — Clinical Trials Arena.
+                          <a href="https://www.clinicaltrialsarena.com/features/featureclinical-trial-patient-recruitment/" target="_blank" rel="noopener">Read source</a>.
+                          Used for: share of trials missing enrollment timelines, share of sites enrolling one patient or none, and revenue lost per day of delay.
+                        </li>
+                        <li id="ref-2">
+                          <em>Reframing Clinical Research in Latin America</em> — peer-reviewed, PubMed Central.
+                          <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12959233/" target="_blank" rel="noopener">Read source</a>.
+                          Used for: regional share of world population, share of global oncology trials (2023), share of global Phase III oncology trials, and country-level regulatory start-up medians. The 3.2× spread is calculated from those medians (9.0 ÷ 2.8).
+                        </li>
+                        <li id="ref-3">
+                          <em>Latin America: A Compelling Region To Conduct Your Clinical Trials</em> — Clinical Leader.
+                          <a href="https://www.clinicalleader.com/doc/latin-america-a-compelling-region-to-conduct-your-clinical-trials-0001" target="_blank" rel="noopener">Read source</a>.
+                          Used for: regional population and urbanisation rate, treatment-naïve populations, and the 60–70% cost differential versus the United States.
+                        </li>
+                        <li id="ref-4">
+                          <em>Latin America Clinical Trials Market Size &amp; Outlook, 2033</em> — Grand View Research.
+                          <a href="https://www.grandviewresearch.com/horizon/outlook/clinical-trials-market/latin-america" target="_blank" rel="noopener">Read source</a>.
+                          Used for: regional clinical trial market size (2025 and 2033), the 8.2% CAGR, and Argentina as the region's fastest-growing market.
+                        </li>
+                        <li id="ref-5">
+                          <em>Latin America Medical Device Clinical Trials Market Size &amp; Outlook, 2030</em> — Grand View Research.
+                          <a href="https://www.grandviewresearch.com/horizon/outlook/medical-device-clinical-trials-market/latin-america" target="_blank" rel="noopener">Read source</a>.
+                          Used for: the region's 2.1% share of the global device-trial market (2024), market size for 2024 and 2030, the 42.4% pivotal-study share, and Brazil as the fastest-growing device-trial market.
+                        </li>
+                        <li id="ref-6">
+                          <em>New Law Expected To Boost Clinical Research In Brazil</em> — Clinical Leader.
+                          <a href="https://www.clinicalleader.com/doc/new-law-expected-to-boost-clinical-research-in-brazil-0001" target="_blank" rel="noopener">Read source</a>.
+                          Used for: Law 14.874/2024, its enactment in May 2024 and entry into force 90 days later, the 90-business-day regulatory response window, and the move to local ethics committee review.
+                        </li>
+                        <li id="ref-7">
+                          <em>Brazil Regulates Clinical Research Act: A Complete Review of Decree #12,651/2025</em> — RNA Law.
+                          <a href="https://www.rna.law/insights/brazil-regulates-clinical-research-act-a-complete-review-of-decree-12-651-2025---part-1" target="_blank" rel="noopener">Read source</a>.
+                          Used for: Decree 12.651/2025, the creation of the National System of Ethics in Research (SINEP), and the regulation of review timeframes.
+                        </li>
+                        <li id="ref-8">
+                          Ruiz-Linares A, <em>et al.</em> (2014). <em>Admixture in Latin America: Geographic Structure, Phenotypic Diversity and Self-Perception of Ancestry Based on 7,342 Individuals</em> — PLOS Genetics.
+                          <a href="https://journals.plos.org/plosgenetics/article?id=10.1371%2Fjournal.pgen.1004572" target="_blank" rel="noopener">Read source</a>.
+                          Used for: three-way continental admixture (Native American, European, African) across Brazil, Chile, Colombia, Mexico and Peru, and the variation between and within countries.
+                        </li>
+                        <li id="ref-9">
+                          LatinaBA operational records and Corporate Presentation, May 2026 — internal, available on request.
+                          Used for: legal entities and headcount by country, working languages, FDA PMA inspection in Chile closing with No Action Indicated, FDA inspection of a biologic study closing with no findings, quality system scope (60+ validated SOPs, 50+ capability audits), ICH-GCP operation and inspection systems across countries of operation, Class I–III device experience, seasonal enrollment practice, and the customs and regulatory-timeline friction points in section 08.
+                        </li>
+                      </ol>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 offset-lg-1">
+                    <p class="ltn-refs-note">
+                      <strong>How to read the citations.</strong> Every figure and factual claim carries a superscript linking to its source. Claims drawn from our own operational records are marked as such rather than dressed up as third-party research.
+                    </p>
+                    <p class="ltn-refs-note">
+                      Geographic and calendar facts — shared U.S. time zones, and Southern Hemisphere seasons running about six months offset — are not cited.
+                    </p>
+                    <p class="ltn-refs-note">
+                      Market projections are third-party forecasts, not guarantees. Regulatory start-up figures are published medians and indicative; we do not present them as commitments for any specific study.
+                    </p>
+                    <p class="ltn-refs-note">Last reviewed: August 2026.</p>
                   </div>
                 </div>
-                <div class="col-lg-4 offset-lg-1">
-                  <p class="ltn-refs-note">
-                    <strong>How to read the citations.</strong> Every figure and factual claim on this page carries a superscript linking to the source it comes from. Claims drawn from LatinaBA's own operational records are marked as such rather than dressed up as third-party research.
-                  </p>
-                  <p class="ltn-refs-note">
-                    Geographic and calendar facts — that the region shares U.S. time zones, and that Southern Hemisphere seasons run about six months offset from Northern ones — are not cited.
-                  </p>
-                  <p class="ltn-refs-note">
-                    Market projections are third-party forecasts, not guarantees. Regulatory start-up figures are published medians and are indicative; LatinaBA does not present them as commitments for any specific study.
-                  </p>
-                  <p class="ltn-refs-note">
-                    Last reviewed: August 2026.
-                  </p>
-                </div>
-              </div>
+              </details>
               <div class="line mt-custom"></div>
             </div>
           </section>
@@ -696,9 +876,9 @@
     <script src="https://unpkg.com/swup@4"></script>
     <script src="swup-app.js"></script>
 
-    <!-- Citation anchors. ScrollSmoother owns the scroll position, so a plain
-         hash jump lands the reference under the fixed navbar. Route the jump
-         through the smoother with an offset and highlight the target. -->
+    <!-- Citation anchors. The reference list lives inside a collapsed <details>,
+         and ScrollSmoother owns the scroll position, so: open the panel first,
+         let ScrollTrigger remeasure, then set an exact scroll position. -->
     <script>
       (function () {
         var NAV_OFFSET = 120;
@@ -710,9 +890,16 @@
           var target = document.querySelector(id);
           if (!target) return;
           e.preventDefault();
+
+          // The references panel is collapsed by default — open it before measuring.
+          var panel = target.closest ? target.closest("details") : null;
+          if (panel && !panel.open) {
+            panel.open = true;
+            if (window.ScrollTrigger && ScrollTrigger.refresh) ScrollTrigger.refresh();
+          }
+
           var smoother = window.ScrollSmoother && ScrollSmoother.get ? ScrollSmoother.get() : null;
           if (smoother && typeof smoother.offset === "function") {
-            // Resolve the target to an absolute scroll position and set it directly.
             // scrollTo() with easing can leave the smoother's internal position out of
             // sync with the native scrollbar and never arrive; scrollTop() is exact.
             var y = smoother.offset(target, "top top") - NAV_OFFSET;
@@ -723,6 +910,7 @@
               behavior: "smooth",
             });
           }
+
           var prev = document.querySelectorAll(".ltn-ref-active");
           for (var i = 0; i < prev.length; i++) prev[i].classList.remove("ltn-ref-active");
           target.classList.add("ltn-ref-active");

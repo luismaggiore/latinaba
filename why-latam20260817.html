@@ -712,10 +712,11 @@
           e.preventDefault();
           var smoother = window.ScrollSmoother && ScrollSmoother.get ? ScrollSmoother.get() : null;
           if (smoother && typeof smoother.offset === "function") {
-            // Resolve the target to an absolute scroll position, then scroll to that
-            // number. Passing an alignment string here is ambiguous and can land at 0.
+            // Resolve the target to an absolute scroll position and set it directly.
+            // scrollTo() with easing can leave the smoother's internal position out of
+            // sync with the native scrollbar and never arrive; scrollTop() is exact.
             var y = smoother.offset(target, "top top") - NAV_OFFSET;
-            smoother.scrollTo(y < 0 ? 0 : y, true);
+            smoother.scrollTop(y < 0 ? 0 : y);
           } else {
             window.scrollTo({
               top: Math.max(0, target.getBoundingClientRect().top + window.pageYOffset - NAV_OFFSET),

@@ -27,11 +27,8 @@ function initLogoMarquee() {
     {
       key: 'cro', label: 'CRO', logos: [
         ['advanced.webp', 'Advanced Clinical'],
-        ['aptiv.webp', 'Aptiv'],
-        ['barnettt.webp', 'Barnett International'],
         ['biomapas.webp', 'Biomapas'],
         ['buenosairesskin.webp', 'Buenos Aires Skin'],
-        ['caidya.webp', 'Caidya'],
         ['confidence.webp', 'Confidence Pharmaceutical Research'],
         ['cssi.webp', 'CSSi Life Sciences'],
         ['ergomed.webp', 'Ergomed'],
@@ -47,7 +44,6 @@ function initLogoMarquee() {
         ['qmed.webp', 'Qmed'],
         ['rti.webp', 'RTI'],
         ['trialrunners.webp', 'Trial Runners'],
-        ['unensayoparami.webp', 'DAMIC SRL'],
         ['worldwideclinical.webp', 'Worldwide Clinical Trials']
       ]
     },
@@ -63,7 +59,6 @@ function initLogoMarquee() {
         ['intercept.webp', 'Intercept Pharmaceuticals'],
         ['kowa.webp', 'Kowa'],
         ['larocheposay.webp', 'La Roche-Posay'],
-        ['norgreen.webp', 'Norgreen'],
         ['octapharma.webp', 'Octapharma'],
         ['oncotelic.webp', 'Oncotelic'],
         ['pantheryx.webp', 'PanTheryx'],

@@ -26,9 +26,12 @@ function initLogoMarquee() {
   var categories = [
     {
       key: 'cro', label: 'CRO', logos: [
+        ['4dmt.webp', '4DMT'],
         ['advanced.webp', 'Advanced Clinical'],
+        ['alimentiv.webp', 'Alimentiv'],
         ['biomapas.webp', 'Biomapas'],
         ['buenosairesskin.webp', 'Buenos Aires Skin'],
+        ['centralab.webp', 'CentraLab'],
         ['confidence.webp', 'Confidence Pharmaceutical Research'],
         ['cssi.webp', 'CSSi Life Sciences'],
         ['ergomed.webp', 'Ergomed'],
@@ -36,14 +39,19 @@ function initLogoMarquee() {
         ['fhiclinical.webp', 'FHI Clinical'],
         ['gcp-service.webp', 'GCP Service'],
         ['georgeclinical.webp', 'George Clinical'],
+        ['health-decisions.webp', 'Health Decisions'],
         ['medtrials.webp', 'MedTrials'],
         ['namsa.webp', 'NAMSA'],
         ['nordicbioscience.webp', 'Nordic Bioscience'],
         ['ora.webp', 'ORA'],
+        ['p95.webp', 'P95'],
+        ['qdb-clinical.webp', 'QbD Clinical'],
         ['qed.webp', 'QED Pharmaceutical Services'],
         ['qmed.webp', 'Qmed'],
         ['rti.webp', 'RTI'],
+        ['stiris.webp', 'Stiris'],
         ['trialrunners.webp', 'Trial Runners'],
+        ['trioncoloy.webp', 'TRIO - Translational Research in Oncology'],
         ['worldwideclinical.webp', 'Worldwide Clinical Trials']
       ]
     },
@@ -54,16 +62,19 @@ function initLogoMarquee() {
         ['avadel.webp', 'Avadel'],
         ['besins-healthcare.webp', 'Besins Healthcare'],
         ['bridgebio.webp', 'BridgeBio'],
+        ['genetix.webp', 'Genetix Biotherapeutics'],
         ['grunenthal.webp', 'Grunenthal'],
         ['hdtbio.webp', 'HDT Bio'],
         ['intercept.webp', 'Intercept Pharmaceuticals'],
         ['kowa.webp', 'Kowa'],
         ['larocheposay.webp', 'La Roche-Posay'],
+        ['nxthera.webp', 'NxTHERA'],
         ['octapharma.webp', 'Octapharma'],
         ['oncotelic.webp', 'Oncotelic'],
         ['pantheryx.webp', 'PanTheryx'],
         ['raffo.webp', 'Laboratorios Raffo'],
         ['reigjofre.webp', 'Reig Jofre'],
+        ['seqirus.webp', 'Seqirus'],
         ['takeda.webp', 'Takeda Vaccines']
       ]
     },
